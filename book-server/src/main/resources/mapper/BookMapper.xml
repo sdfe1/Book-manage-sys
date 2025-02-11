@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zll.server.mapper.BookMapper">
+    <update id="updateBook" parameterType="Book">
+        update book
+        <set>
+            <if test="title != null and title != ''  ">title = #{title},</if>
+            <if test="isbn != null and isbn != ''">isbn = #{isbn},</if>
+            <if test="publisher != null and publisher != ''">publisher = #{publisher},</if>
+            <if test="author != null and author != ''">author = #{author},</if>
+            <if test="publishDate != null and publishDate != ''">publish_date = #{publishDate},</if>
+            <if test="price != null and price != ''">price = #{price},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="updateUser != null and updateUser != ''">update_user = #{updateUser},</if>
+            <if test="stock != null and stock != ''">stock = #{stock}</if>
+        </set>
+        where id = #{id}
+    </update>
+</mapper>

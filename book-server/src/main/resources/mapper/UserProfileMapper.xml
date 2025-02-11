@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zll.server.mapper.UserProfileMapper">
+    <update id="updateUserProfile" parameterType="UserProfile">
+        update user_profile
+        <set>
+            <if test="gender != null and gender.name() != ''  ">gender = #{gender},</if>
+            <if test="location != null and location != ''  ">location = #{location},</if>
+            <if test="bio != null and bio != ''  ">bio = #{bio},</if>
+            <if test="interests != null and interests != ''  ">interests = #{interests},</if>
+            <if test="privacyLevel.name() == 'PUBLIC' or privacyLevel.name() == 'PRIVATE' or privacyLevel.name() == 'FRIENDS_ONLY' ">privacy_level = #{privacyLevel},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+        </set>
+        where user_id = #{userId}
+    </update>
+
+</mapper>

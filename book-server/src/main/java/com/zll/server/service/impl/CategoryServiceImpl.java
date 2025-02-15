@@ -8,7 +8,6 @@ import com.zll.common.enumeration.CommonErrorCodeEnum;
 import com.zll.common.exception.category.CategoryErrorException;
 import com.zll.common.result.PageResult;
 import com.zll.common.context.BaseContext;
-import com.zll.common.exception.base.BaseException;
 import com.zll.pojo.dto.CategoryDTO;
 import com.zll.pojo.dto.CategoryPageQueryDTO;
 import com.zll.pojo.entity.Category;

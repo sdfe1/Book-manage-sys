@@ -1,15 +1,17 @@
 package com.zll.server.controller.admin;
 
+import com.zll.common.result.PageResult;
 import com.zll.common.result.Result;
 import com.zll.pojo.dto.BookDTO;
+import com.zll.pojo.dto.BookPageQueryDTO;
 import com.zll.pojo.entity.Book;
 import com.zll.pojo.vo.BookVO;
 import com.zll.server.service.BookService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
 
 /**
  * 书籍相关的控制器
@@ -39,6 +41,14 @@ public class BookController {
 
     //获取所有图书列表
 
+    @GetMapping("/page")
+    public Result<PageResult> getBooks(@RequestParam("page") int page,
+                                       @RequestParam("pageSize") int pageSize,
+                                       @RequestParam(value = "sort", defaultValue = "title,asc") String sort) {
+        BookPageQueryDTO bookPageQueryDTO = new BookPageQueryDTO(page, pageSize, sort);
+        PageResult pageResult = bookService.getBooks(bookPageQueryDTO);
+        return Result.success(pageResult);
+    }
     //获取单本图书信息
     @GetMapping("/{id}")
     public Result<BookVO> getBookById(@PathVariable Long id) {
@@ -66,5 +76,19 @@ public class BookController {
         return Result.success();
     }
 
+    //`GET /api/books/search?title=Java&author
+    //
+    //isbn,publisher,publish_date,price,stock
+    /*@GetMapping("/search")
+    public Result<PageResult> searchBooks(
+            @RequestParam(value = "title", required = false) String title,
+            @RequestParam(value = "author", required = false) String author,
+            @RequestParam(value = "isbn", required = false) String isbn,
+            @RequestParam(value = "publisher", required = false) String publisher,
+            @RequestParam(value = "publish_date", required = false) String publishDate,
+            @RequestParam(value = "price", required = false) BigDecimal price,
+            @RequestParam(value = "stock", required = false) Integer stock
+            ) {
 
+    }*/
 }

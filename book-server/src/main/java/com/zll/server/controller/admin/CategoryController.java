@@ -67,11 +67,15 @@ public class CategoryController {
         return Result.success();
     }
 
-    //TODO 问题
+
     @GetMapping("/page")
-    public Result<PageResult> page(@RequestParam CategoryPageQueryDTO categoryPageQueryDTO) {
+    public Result<PageResult> page(
+            @RequestParam("page") int page,
+            @RequestParam("pageSize") int pageSize,
+            @RequestParam(value = "name", defaultValue = "") String name) {
+
+        CategoryPageQueryDTO categoryPageQueryDTO = new CategoryPageQueryDTO(page, pageSize, name);
         PageResult pageResult = categoryService.pageQuery(categoryPageQueryDTO);
         return Result.success(pageResult);
     }
-
 }

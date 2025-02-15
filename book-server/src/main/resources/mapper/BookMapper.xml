@@ -17,4 +17,23 @@
         </set>
         where id = #{id}
     </update>
+
+    <select id="pageQuery" resultType="Book">
+        select * from book
+        order by
+        <choose>
+            <when test="sort == 'title'">
+                title, create_time desc
+            </when>
+            <when test="sort == 'publisher'">
+                publisher, create_time desc
+            </when>
+            <when test="sort == 'author'">
+                author, create_time desc-- 如果 author 相同，就按 create_time 排序
+            </when>
+            <otherwise>
+                create_time desc -- 默认按创建时间降序排序
+            </otherwise>
+        </choose>
+    </select>
 </mapper>

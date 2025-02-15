@@ -2,12 +2,18 @@ package com.zll.server.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.bean.copier.CopyOptions;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.zll.common.context.BaseContext;
 import com.zll.common.enumeration.CommonErrorCodeEnum;
 import com.zll.common.exception.book.BookErrorException;
+import com.zll.common.result.PageResult;
 import com.zll.common.utils.IsbnUtil;
 import com.zll.pojo.dto.BookDTO;
+import com.zll.pojo.dto.BookPageQueryDTO;
 import com.zll.pojo.entity.Book;
+import com.zll.pojo.entity.Category;
+import com.zll.pojo.vo.BookVO;
 import com.zll.server.mapper.BookMapper;
 import com.zll.server.service.BookService;
 import lombok.extern.slf4j.Slf4j;
@@ -15,12 +21,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @Slf4j
 public class BookServiceImpl implements BookService {
     @Autowired
     private BookMapper bookMapper;
+
 
     @Override
     public void addBook(BookDTO bookDTO) {
@@ -74,6 +82,17 @@ public class BookServiceImpl implements BookService {
         book.setUpdateTime(LocalDateTime.now());
         book.setUpdateUser(BaseContext.getCurrentId());
         bookMapper.updateBook(book);
+    }
+
+    @Override
+    public PageResult getBooks(BookPageQueryDTO bookPageQueryDTO) {
+        PageHelper.startPage(bookPageQueryDTO.getPage(),bookPageQueryDTO.getPageSize());
+
+        //下一条sql进行分页，自动加入limit关键字分页
+        Page<Book> page =  bookMapper.pageQuery(bookPageQueryDTO);
+        long total = page.getTotal();
+        List<Book> records= page.getResult();
+        return new PageResult(total,records);
     }
 
 

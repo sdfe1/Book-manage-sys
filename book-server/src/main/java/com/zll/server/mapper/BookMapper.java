@@ -1,6 +1,8 @@
 package com.zll.server.mapper;
 
+import com.github.pagehelper.Page;
 import com.zll.pojo.dto.BookDTO;
+import com.zll.pojo.dto.BookPageQueryDTO;
 import com.zll.pojo.entity.Book;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Service;
@@ -21,5 +23,7 @@ public interface BookMapper {
 
 
     void updateBook(Book book);
+
+    Page<Book> pageQuery(BookPageQueryDTO bookPageQueryDTO);
 
 }

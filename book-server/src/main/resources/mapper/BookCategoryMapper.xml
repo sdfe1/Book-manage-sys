@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zll.server.mapper.BookCategoryMapper">
+    <select id="pageQuery" resultType="BookVO">
+    select b.id, b.title, b.isbn, b.publisher, b.author, b.publish_date
+    from book b
+    where b.id in (
+        select bc.book_id
+        from book_category bc
+        where bc.category_id = #{categoryId}
+    )
+    </select>
+</mapper>

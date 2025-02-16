@@ -6,6 +6,7 @@ import com.zll.common.enumeration.CommonErrorCodeEnum;
 import com.zll.common.exception.auth.AccountLockedException;
 import com.zll.common.exception.auth.AccountNameException;
 import com.zll.common.exception.auth.PasswordErrorException;
+import com.zll.common.utils.PasswordUtil;
 import com.zll.pojo.dto.UserLoginDTO;
 import com.zll.pojo.dto.UserRegisterDTO;
 import com.zll.pojo.em.RoleEnum;
@@ -17,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+
+import static com.zll.common.utils.PasswordUtil.verifyPassword;
 
 
 @Service
@@ -31,7 +34,7 @@ public class UserServiceImpl implements UserService {
       if (user == null){
           throw new AccountNameException(CommonErrorCodeEnum.NOT_FOUND,"用户名不存在");
       }
-      if(!user.getPassword().equals(userLoginDTO.getPassword())){
+      if(!PasswordUtil.verifyPassword(userLoginDTO.getPassword(), user.getPassword())){
           throw new PasswordErrorException(CommonErrorCodeEnum.INVALID_REQUEST,"密码错误");
       }
       if (user.getIsLogin()==StatusConstant.DISABLE) {
@@ -46,16 +49,18 @@ public class UserServiceImpl implements UserService {
         if (userMapper.findUserByName(userRegisterDTO.getUserName()) != null) {
             throw new AccountNameException(CommonErrorCodeEnum.ALREADY_EXISTS,"用户名已存在");
         }
-        //2.保存用户信息
+        //2.生成加盐加密的密码
+        String hashedPassword = PasswordUtil.hashPassword(userRegisterDTO.getPassword());
+        //3.保存用户信息
         User saveUser = User.builder()
                 .username(userRegisterDTO.getUserName())
-                .password(userRegisterDTO.getPassword())
+                .password(hashedPassword)
                 .role(RoleEnum.USER)
                 .avatar("http")
                 .createTime(LocalDateTime.now())
                 .isLogin(StatusConstant.ENABLE)
                 .isWord(StatusConstant.ENABLE).build();
-        //3.添加到数据库
+        //4.添加到数据库
         userMapper.insert(saveUser);
     }
 

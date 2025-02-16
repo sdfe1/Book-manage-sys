@@ -1,7 +1,9 @@
 package com.zll.common.exception.base;
 
 import com.zll.common.enumeration.CommonErrorCodeEnum;
+import lombok.Getter;
 
+@Getter
 public class BaseException extends RuntimeException{
 
     private Integer code;

@@ -2,15 +2,14 @@ package com.zll.pojo.entity;
 
 import com.zll.pojo.em.Gender;
 import com.zll.pojo.em.PrivacyLevel;
+import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data

@@ -42,12 +42,12 @@ public class BookCategoryController {
     }
     //根据图书Id获取图书分类信息
     @GetMapping("/bookCategory/{bookId}")
-    public Result<Integer> getCategoryByBookId(@Valid @PathVariable Long bookId) {
+    public Result<Integer> getCategoryByBookId( @PathVariable Long bookId) {
         return Result.success(bookCategoryService.getCategoryByBookId(bookId));
     }
     //根据分类id获取图书信息
     @GetMapping("/bookCategory/category/{categoryId}")
-    public Result<PageResult> getBookByCategoryId(@Valid @PathVariable Integer categoryId,   // 从 URL 中获取 categoryId
+    public Result<PageResult> getBookByCategoryId( @PathVariable Integer categoryId,   // 从 URL 中获取 categoryId
                                                   @RequestParam("page") int page,     // 从查询参数中获取分页参数 page
                                                   @RequestParam("pageSize") int pageSize) {
         PageResult pageResult = bookCategoryService.getBookByCategoryId(new BookCategoryQueryDTO(page, pageSize,categoryId));

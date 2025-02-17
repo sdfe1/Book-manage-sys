@@ -2,10 +2,7 @@ package com.zll.pojo.entity;
 
 import com.zll.pojo.em.RoleEnum;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +13,7 @@ import java.time.LocalDateTime;
 /**
  * 用户实体
  */
+@Entity
 @Data
 @Builder
 @AllArgsConstructor
@@ -37,12 +35,12 @@ public class User {
     private LocalDateTime createTime;
 
     /**
-     * 可登录状态(0 ,1)
+     * 可登录状态: ENABLE =1启用 DISABLE =0禁用
      */
     private Integer isLogin;
 
     /**
-     * 禁言状态
+     * 禁言状态：ENABLE =1启用 DISABLE =0禁用
      */
     private Integer isWord;
 

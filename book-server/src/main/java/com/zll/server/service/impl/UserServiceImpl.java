@@ -14,20 +14,32 @@ import com.zll.pojo.entity.User;
 import com.zll.server.mapper.UserMapper;
 import com.zll.server.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.time.LocalDateTime;
 
 import static com.zll.common.utils.PasswordUtil.verifyPassword;
 
 
+/**
+ * 用户认证服务实现
+ */
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserMapper userMapper;
+    private final UserMapper userMapper;
+
+    /**
+     * 登录
+     * @param userLoginDTO 用户登录请求参数
+     * @return 登录成功后的用户实体
+     */
     @Override
     public User login(UserLoginDTO userLoginDTO) {
       User user = userMapper.findUserByName(userLoginDTO.getUsername());
@@ -40,29 +52,42 @@ public class UserServiceImpl implements UserService {
       if (user.getIsLogin()==StatusConstant.DISABLE) {
           throw new AccountLockedException(CommonErrorCodeEnum.ACCOUNT_DISABLED,"用户账号被禁用");
       }
+        log.info("用户登录：{}", userLoginDTO.getUsername());
         return user;
     }
 
+    /**
+     * 注册
+     * @param userRegisterDTO 用户注册请求参数
+     *
+     */
     @Override
     public void register(UserRegisterDTO userRegisterDTO) {
         //1.判断是否已经存在该账户名
-        if (userMapper.findUserByName(userRegisterDTO.getUserName()) != null) {
+        if (userMapper.findUserByName(userRegisterDTO.getUsername()) != null) {
             throw new AccountNameException(CommonErrorCodeEnum.ALREADY_EXISTS,"用户名已存在");
         }
-        //2.生成加盐加密的密码
-        String hashedPassword = PasswordUtil.hashPassword(userRegisterDTO.getPassword());
-        //3.保存用户信息
+        // 2. 构建用户实体
         User saveUser = User.builder()
-                .username(userRegisterDTO.getUserName())
-                .password(hashedPassword)
+                .username(userRegisterDTO.getUsername())
+                .password(PasswordUtil.hashPassword(userRegisterDTO.getPassword()))
                 .role(RoleEnum.USER)
                 .avatar("http")
                 .createTime(LocalDateTime.now())
                 .isLogin(StatusConstant.ENABLE)
-                .isWord(StatusConstant.ENABLE).build();
-        //4.添加到数据库
-        userMapper.insert(saveUser);
+                .isWord(StatusConstant.ENABLE)
+                .build();
+        try {
+            // 3. 插入用户
+            userMapper.insert(saveUser);
+            log.info("注册用户：{}", userRegisterDTO.getUsername());
+        } catch (DuplicateKeyException ex) {
+            // 4. 精确捕获用户名唯一约束异常
+            throw new AccountNameException(CommonErrorCodeEnum.ALREADY_EXISTS, "用户名已被占用");
+        }
     }
+
+
 
 
 }

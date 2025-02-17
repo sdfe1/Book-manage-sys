@@ -93,11 +93,11 @@
             <version>6.4.0.Final</version> <!-- 版本根据需要选择 -->
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.github.xiaoymin/knife4j-openapi3-jakarta-spring-boot-starter -->
+
         <dependency>
-            <groupId>com.github.xiaoymin</groupId>
+            <groupId>com.github.xingfudeshi</groupId>
             <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
-            <version>4.5.0</version>
+            <version>4.6.0</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/cn.dev33/sa-token-core -->
@@ -120,6 +120,11 @@
             <groupId>org.mindrot</groupId>
             <artifactId>jbcrypt</artifactId>
             <version>0.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
 

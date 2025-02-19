@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,5 +23,9 @@ public class BookVO {
     private String author;
 
     private String publishDate;
+
+    private BigDecimal price;
+
+    private int stock;
 
 }

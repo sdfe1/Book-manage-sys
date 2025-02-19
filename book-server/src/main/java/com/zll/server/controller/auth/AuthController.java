@@ -52,4 +52,12 @@ public class AuthController {
         //2.返回响应信息
         return Result.success(new UserLoginVO(user.getId(),user.getRole().getValue()));
     }
+
+    //登出
+    @Operation(summary = "登出")
+    @PostMapping("/logout")
+    public Result logout() {
+        StpUtil.logout();
+        return Result.success();
+    }
 }

@@ -8,39 +8,40 @@ import com.zll.common.context.BaseContext;
 import com.zll.common.enumeration.CommonErrorCodeEnum;
 import com.zll.common.exception.book.BookErrorException;
 import com.zll.common.result.PageResult;
-import com.zll.common.utils.IsbnUtil;
 import com.zll.pojo.dto.BookDTO;
 import com.zll.pojo.dto.BookPageQueryDTO;
 import com.zll.pojo.entity.Book;
-import com.zll.pojo.entity.Category;
 import com.zll.pojo.vo.BookVO;
 import com.zll.server.mapper.BookMapper;
 import com.zll.server.service.BookService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
+
+/**
+ * 图书服务实现类
+ */
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
-    @Autowired
-    private BookMapper bookMapper;
 
+    private final BookMapper bookMapper;
 
+    /**
+     * 添加图书
+     * @param bookDTO
+     */
     @Override
     public void addBook(BookDTO bookDTO) {
-        //书名和作者不为空
-        if(bookDTO.getAuthor() == null || bookDTO.getTitle() == null) {
-            throw new BookErrorException(CommonErrorCodeEnum.INVALID_REQUEST,"作者或书名不能为空");
+        //1.判断ISBN是否唯一
+        if (bookMapper.ISBNExists(bookDTO.getIsbn()) == null) {
+            throw new BookErrorException(CommonErrorCodeEnum.ALREADY_EXISTS,"ISBN已存在");
         }
-        //isbn输入格式正确
-        if (!IsbnUtil.validateISBN13(bookDTO.getIsbn())) {
-            throw new BookErrorException(CommonErrorCodeEnum.INVALID_REQUEST,"isbn格式不正确");
-        }
-        //完善book
+        //2.BookDTO转Book
         Book book = Book.builder()
                 .title(bookDTO.getTitle())
                 .isbn(bookDTO.getIsbn())
@@ -54,45 +55,71 @@ public class BookServiceImpl implements BookService {
                 .createUser(BaseContext.getCurrentId())
                 .updateUser(BaseContext.getCurrentId())
                 .build();
+        //3.插入数据
         bookMapper.insert(book);
-
     }
 
+    /**
+     * 删除图书
+     * @param id 图书id
+     *
+     */
     @Override
     public void deleteBook(Long id) {
-        //判断id的书是否存在
-        if(bookMapper.getBookById(id) == null) {
-            throw new BookErrorException(CommonErrorCodeEnum.NOT_FOUND,"书不存在");
+        int rows = bookMapper.deleteBook(id);
+        if (rows == 0) {
+            throw new BookErrorException(CommonErrorCodeEnum.NOT_FOUND,"图书不存在");
         }
-        bookMapper.deleteBook(id);
     }
 
     @Override
     public Book getBookById(Long id) {
-        if (bookMapper.getBookById(id) == null) {
+        Book book= bookMapper.getBookById(id);
+        if (book == null) {
             throw new BookErrorException(CommonErrorCodeEnum.NOT_FOUND,"书不存在");
         }
-        return bookMapper.getBookById(id);
+        return book;
     }
 
+    /**
+     * 更新图书
+     * @param bookDTO
+     *
+     */
     @Override
     public void updateBook(BookDTO bookDTO) {
+        // 1. 查询当前书本信息
+        Book oldBook = bookMapper.getBookById(bookDTO.getId());
+        if (oldBook == null) {
+            throw new BookErrorException(CommonErrorCodeEnum.NOT_FOUND,"图书不存在");
+        }
+        //2. BookDTO转Book
         Book book = new Book();
         BeanUtil.copyProperties(bookDTO,book, CopyOptions.create().ignoreNullValue());
         book.setUpdateTime(LocalDateTime.now());
         book.setUpdateUser(BaseContext.getCurrentId());
-        bookMapper.updateBook(book);
+        // 3. 更新数据
+        int rows = bookMapper.updateBook(book);
+        if (rows == 0) {
+            throw new BookErrorException(CommonErrorCodeEnum.CONCURRENT_CONFLICT,"数据已被修改，请刷新后重试");
+        }
     }
 
+    /**
+     * 获取所有图书列表
+     * @param bookPageQueryDTO
+     * @return
+     */
     @Override
     public PageResult getBooks(BookPageQueryDTO bookPageQueryDTO) {
         PageHelper.startPage(bookPageQueryDTO.getPage(),bookPageQueryDTO.getPageSize());
 
         //下一条sql进行分页，自动加入limit关键字分页
-        Page<Book> page =  bookMapper.pageQuery(bookPageQueryDTO);
-        long total = page.getTotal();
-        List<Book> records= page.getResult();
-        return new PageResult(total,records);
+        Page<BookVO> page =  bookMapper.pageQuery(bookPageQueryDTO);
+        return new PageResult(
+                page.getTotal(),
+                page.getResult()
+        );
     }
 
 

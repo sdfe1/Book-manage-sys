@@ -12,6 +12,7 @@ import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -44,6 +45,7 @@ public class BookController {
      * @return
      */
     @DeleteMapping("/{id}")
+    @Validated
     public Result deleteBook(@PathVariable @Min(value = 1, message = "ID必须为正数") Long id){
         bookService.deleteBook(id);
         return Result.success();

@@ -21,11 +21,11 @@ public interface CategoryMapper {
     Category selectById(int id);
 
     @Delete("delete from category where id = #{id}")
-    void delete(int id);
+    int delete(int id);
     @Select("select * from category where name = #{name}")
     Category selectByName(String name);
 
-    void update(Category category);
+    int update(Category category);
 
 
     Page<Category> pageQuery(CategoryPageQueryDTO categoryPageQueryDTO);

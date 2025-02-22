@@ -10,9 +10,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping
 public class UserProfileController {
-    // `GET /api/users/{userId}/profile`: 获取用户个人资料
-    // `POST /api/users/{userId}/profile`: 更新用户个人资料
-
 
     @Autowired
     private UserProfileService userProfileService;

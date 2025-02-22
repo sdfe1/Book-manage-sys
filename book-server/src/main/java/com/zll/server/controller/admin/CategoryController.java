@@ -2,12 +2,18 @@ package com.zll.server.controller.admin;
 
 import com.zll.common.result.PageResult;
 import com.zll.common.result.Result;
+import com.zll.common.validation.CreateGroup;
+import com.zll.common.validation.UpdateGroup;
 import com.zll.pojo.dto.CategoryDTO;
 import com.zll.pojo.dto.CategoryPageQueryDTO;
 import com.zll.pojo.entity.Book;
 import com.zll.pojo.entity.Category;
 import com.zll.server.service.CategoryService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,24 +23,31 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/categories")
+@RequiredArgsConstructor
 public class CategoryController {
 
-    @Autowired
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
 
     /**
+     * 新增分类
      * @param categoryDTO
      * @return
      */
     @PostMapping
-    public Result addCategory(@RequestBody CategoryDTO categoryDTO) {
+    public Result addCategory(@Validated(CreateGroup.class) @RequestBody CategoryDTO categoryDTO) {
         categoryService.addCategory(categoryDTO);
         return Result.success();
     }
 
 
+    /**
+     * 删除分类
+     * @param id 待删除分类的id
+     * @return
+     */
     @DeleteMapping("/{id}")
-    public Result deleteCategory(@PathVariable int id) {
+    @Validated
+    public Result deleteCategory(@PathVariable @Min(value = 1, message = "ID必须为正数") int id) {
         categoryService.deleteCategory(id);
         return Result.success();
     }
@@ -45,8 +58,15 @@ public class CategoryController {
         return Result.success(category.getName());
     };
 
+    /**
+     * 更新分类
+     * @param id 分类id
+     * @param categoryDTO
+     * @return
+     */
     @PutMapping("/{id}")
-    public Result updateCategory(@PathVariable int id, @RequestBody CategoryDTO categoryDTO) {
+    @Validated(UpdateGroup.class)
+    public Result updateCategory(@PathVariable @Min(value = 1, message = "ID必须为正数") int id,  @RequestBody @Valid CategoryDTO categoryDTO) {
         categoryDTO.setId(id);
         categoryService.updateCategory(categoryDTO);
         return Result.success();

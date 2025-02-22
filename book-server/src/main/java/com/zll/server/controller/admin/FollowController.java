@@ -4,48 +4,66 @@ import com.zll.common.context.BaseContext;
 import com.zll.common.result.Result;
 import com.zll.pojo.vo.UserVO;
 import com.zll.server.service.FollowService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * 用户关注功能控制器
+ */
 @RestController
-@RequestMapping
+@RequestMapping("/users/{userId}")
+@RequiredArgsConstructor
 public class FollowController {
 
-/*    - `POST /api/users/{userId}/follow`: 关注用户
-- `GET /api/users/{userId}/followers`: 获取用户的关注者列表
-- `GET /api/users/{userId}/following`: 获取用户关注的用户列表*/
+    private final FollowService followService;
 
-
-    @Autowired
-    private FollowService followService;
-
-    @PostMapping("/users/{userId}/follow")
-    public Result followUser(@PathVariable Long userId) {
+    /**
+     * 关注用户
+     * @param userId
+     * @return
+     */
+    @PostMapping("/follow")
+    public Result followUser(@Valid @PathVariable Long userId) {
         Long currentUserId = BaseContext.getCurrentId();
         followService.followUser(currentUserId, userId);
         return Result.success();
     }
 
-    @DeleteMapping("/users/{userId}/follow")
-    public Result unfollowUser(@PathVariable Long userId) {
+    /**
+     * 取消关注
+     * @param userId
+     * @return
+     */
+    @DeleteMapping("/follow")
+    public Result unfollowUser(@Valid @PathVariable Long userId) {
         Long currentUserId = BaseContext.getCurrentId();
         followService.unfollowUser(currentUserId, userId);
         return Result.success();
     }
 
-    //获取用户的粉丝列表
-    @GetMapping("/users/{userId}/followers")
-    public Result<List<UserVO>> getFollowers(@PathVariable Long userId) {
+    /**
+     * 获取用户的粉丝列表
+     * @param userId
+     * @return
+     */
+    @GetMapping("/followers")
+    public Result<List<UserVO>> getFollowers(@Valid @PathVariable Long userId) {
          List<UserVO> followers = followService.getFollowers(userId);
         return Result.success(followers);
     }
 
 
-    //获取用户关注的博主列表
-    @GetMapping("/users/{userId}/following")
-    public Result<List<UserVO>> getFollowing(@PathVariable Long userId) {
+    /**
+     * 获取用户关注的列表
+     * @param userId
+     * @return
+     */
+    @GetMapping("/following")
+    public Result<List<UserVO>> getFollowing(@Valid @PathVariable Long userId) {
         List<UserVO> following = followService.getFollowing(userId);
         return Result.success(following);
     }

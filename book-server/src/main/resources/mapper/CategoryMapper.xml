@@ -6,10 +6,12 @@
         update category
         <set>
             <if test="name != null and name != ''  ">name = #{name},</if>
+            <if test="status != null">status = #{status},</if>
             <if test="updateTime != null ">update_time = #{updateTime},</if>
             <if test="updateUser != null and updateUser != ''">update_user = #{updateUser},</if>
+            version = version + 1,
         </set>
-        where id = #{id}
+        where id = #{id} AND version = #{version}
     </update>
 
     <select id="pageQuery" resultType="Category">

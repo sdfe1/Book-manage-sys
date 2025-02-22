@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * 图书收藏DTO
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

@@ -1,7 +1,9 @@
 package com.zll.server.service;
 
+import com.zll.common.result.PageResult;
 import com.zll.pojo.dto.BookDTO;
 import com.zll.pojo.dto.FavoriteBookDTO;
+import com.zll.pojo.dto.FavoritePageQueryDTO;
 
 import java.util.List;
 
@@ -11,6 +13,6 @@ public interface FavoriteBookService {
 
     void removeFavoriteBook(Long userId, Long bookId);
 
-    List<BookDTO> getFavoriteBooks(Long userId);
+    PageResult getFavoriteBooks(FavoritePageQueryDTO favoritePageQueryDTO);
 
 }

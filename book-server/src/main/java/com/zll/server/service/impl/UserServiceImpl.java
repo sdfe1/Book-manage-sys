@@ -2,6 +2,7 @@ package com.zll.server.service.impl;
 
 
 import com.zll.common.constant.StatusConstant;
+import com.zll.common.context.BaseContext;
 import com.zll.common.enumeration.CommonErrorCodeEnum;
 import com.zll.common.exception.auth.AccountLockedException;
 import com.zll.common.exception.auth.AccountNameException;
@@ -9,9 +10,12 @@ import com.zll.common.exception.auth.PasswordErrorException;
 import com.zll.common.utils.PasswordUtil;
 import com.zll.pojo.dto.UserLoginDTO;
 import com.zll.pojo.dto.UserRegisterDTO;
+import com.zll.pojo.em.PrivacyLevel;
 import com.zll.pojo.em.RoleEnum;
 import com.zll.pojo.entity.User;
+import com.zll.pojo.entity.UserProfile;
 import com.zll.server.mapper.UserMapper;
+import com.zll.server.mapper.UserProfileMapper;
 import com.zll.server.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +38,8 @@ import static com.zll.common.utils.PasswordUtil.verifyPassword;
 public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
+
+    private final UserProfileMapper userProfileMapper;
 
     /**
      * 登录
@@ -78,11 +84,19 @@ public class UserServiceImpl implements UserService {
                 .isWord(StatusConstant.ENABLE)
                 .build();
         try {
-            // 3. 插入用户
+            // 3. 插入用户(自动回填id)
             userMapper.insert(saveUser);
             log.info("注册用户：{}", userRegisterDTO.getUsername());
+
+            //4.新增空用户资料
+            UserProfile initProfile = UserProfile.builder()
+                    .userId(saveUser.getId())//获取Id值
+                    .privacyLevel(PrivacyLevel.PUBLIC)  // 设置默认值
+                    .createTime(LocalDateTime.now())
+                    .build();
+            userProfileMapper.addUserProfile(initProfile);
         } catch (DuplicateKeyException ex) {
-            // 4. 精确捕获用户名唯一约束异常
+            // 5. 精确捕获用户名唯一约束异常
             throw new AccountNameException(CommonErrorCodeEnum.ALREADY_EXISTS, "用户名已被占用");
         }
     }

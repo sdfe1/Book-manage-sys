@@ -1,33 +1,56 @@
 package com.zll.server.service.impl;
 
+import com.zll.common.enumeration.CommonErrorCodeEnum;
+import com.zll.common.exception.UserProfileErrorException;
 import com.zll.common.result.Result;
 import com.zll.pojo.dto.UserProfileDTO;
 import com.zll.pojo.entity.UserProfile;
+import com.zll.server.mapper.UserMapper;
 import com.zll.server.mapper.UserProfileMapper;
 import com.zll.server.service.UserProfileService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+/**
+ * 用户个人资料实现类
+ */
 @Service
+@RequiredArgsConstructor
 public class UserProfileServiceImpl implements UserProfileService {
 
-    @Autowired
-    private UserProfileMapper userProfileMapper;
+    private final UserProfileMapper userProfileMapper;
 
+    private final UserMapper userMapper;
+
+    /**
+     * 获取用户个人资料
+     * @param userId
+     * @return
+     */
     @Override
     public UserProfile getUserProfile(Long userId) {
-        if (userProfileMapper.getUserProfile(userId) == null) {
-            throw new RuntimeException("获取用户信息失败");
+        if (userMapper.getUserById(userId) == null) {
+            throw new UserProfileErrorException(CommonErrorCodeEnum.NOT_FOUND, "用户不存在");
         }
-        return userProfileMapper.getUserProfile(userId);
+        UserProfile userProfile = userProfileMapper.getUserProfile(userId);
+        if (userProfile == null) {
+            throw new UserProfileErrorException(CommonErrorCodeEnum.NOT_FOUND, "用户个人资料不存在");
+        }
+        return userProfile;
     }
 
+    /**
+     * 更新个人资料
+     * @param userId
+     * @param userProfileDTO
+     */
     @Override
     public void updateUserProfile(Long userId, UserProfileDTO userProfileDTO) {
         if (userProfileMapper.getUserProfile(userId) == null) {
-            throw new RuntimeException("获取用户信息失败");
+            throw new UserProfileErrorException(CommonErrorCodeEnum.NOT_FOUND,"获取用户信息失败");
         }
         UserProfile userProfile = UserProfile.builder()
                 .userId(userId)

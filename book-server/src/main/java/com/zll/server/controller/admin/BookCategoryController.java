@@ -7,16 +7,18 @@ import com.zll.pojo.dto.CategoryDTO;
 import com.zll.pojo.entity.BookCategory;
 import com.zll.server.service.BookCategoryService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/books")
+@RequiredArgsConstructor
 public class BookCategoryController {
 
-    @Autowired
-    private BookCategoryService bookCategoryService;
+
+    private final BookCategoryService bookCategoryService;
     //为图书创建新分类
 
 

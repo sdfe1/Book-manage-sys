@@ -9,9 +9,8 @@
             <if test="location != null and location != ''  ">location = #{location},</if>
             <if test="bio != null and bio != ''  ">bio = #{bio},</if>
             <if test="interests != null and interests != ''  ">interests = #{interests},</if>
-            <if test="privacyLevel.name() == 'PUBLIC' or privacyLevel.name() == 'PRIVATE' or privacyLevel.name() == 'FRIENDS_ONLY' ">privacy_level = #{privacyLevel},</if>
+            <if test="privacyLevel != null ">privacy_level = #{privacyLevel},</if>
             <if test="updateTime != null ">update_time = #{updateTime},</if>
-            <if test="createTime != null ">create_time = #{createTime},</if>
         </set>
         where user_id = #{userId}
     </update>

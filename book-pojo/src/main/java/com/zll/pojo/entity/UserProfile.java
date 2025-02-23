@@ -12,6 +12,9 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+/**
+ * 用户个人资料实体类
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,7 +27,7 @@ public class UserProfile {
 
     private String location;
 
-    private String bio;
+    private String bio;//个人简介
 
     private String interests;
 

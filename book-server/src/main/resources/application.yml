@@ -62,6 +62,11 @@ sa-token:
     secure: true                # 仅 HTTPS 传输
     http-only: true             # 禁止 JS 读取（防 XSS）
     same-site: lax              # 防止 CSRF 攻击
+  logging:
+    level:
+      # Sa-Token 核心包日志级别
+      cn.dev33.satoken: TRACE    # 启用 TRACE 级别日志（最详细）
+
 
 ---
 mybatis:

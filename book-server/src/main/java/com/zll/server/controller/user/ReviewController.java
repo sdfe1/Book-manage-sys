@@ -1,4 +1,4 @@
-package com.zll.server.controller.admin;
+package com.zll.server.controller.user;
 
 import com.zll.common.result.PageResult;
 import com.zll.common.result.Result;
@@ -6,6 +6,7 @@ import com.zll.pojo.dto.ReviewPageQueryDTO;
 import com.zll.pojo.entity.Review;
 import com.zll.pojo.dto.ReviewDTO;
 import com.zll.server.service.ReviewService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,8 @@ import java.util.List;
  * 评论功能控制器
  */
 @RestController
-@RequestMapping("/books/{bookId}/reviews")
+@RequestMapping("/user/books/{bookId}/reviews")
+@Tag(name = "USER-评论功能")
 @RequiredArgsConstructor
 public class ReviewController {
 
@@ -28,7 +30,7 @@ public class ReviewController {
      * 添加评论
      * @param bookId
      * @param reviewDTO
-     * @return
+     * @returnc
      */
     @PostMapping
     public Result addReview(@PathVariable Long bookId, @Valid @RequestBody ReviewDTO reviewDTO) {

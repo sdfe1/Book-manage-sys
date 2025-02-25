@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/user")
-@Tag(name = "用户管理")
+@RequestMapping("/auth")
+@Tag(name = "认证功能")
 @Slf4j
 public class AuthController {
 
@@ -49,6 +49,7 @@ public class AuthController {
         User user= userService.login(userLoginDTO);
         //1.登录,sotoken会自动存入cookie
         StpUtil.login(user.getId());
+        log.info("用户角色: {}", user.getRole()); // 确保此处输出 ADMIN
         //2.返回响应信息
         return Result.success(new UserLoginVO(user.getId(),user.getRole().getValue()));
     }

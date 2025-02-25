@@ -10,10 +10,10 @@ import org.apache.ibatis.annotations.*;
 public interface BookCategoryMapper {
 
     @Insert("insert into book_category (category_id,book_id) values (#{categoryId},#{bookId})")
-    void insert(BookCategory bookCategory);
+    void insert(Long bookId, Integer categoryId);
 
     @Delete("delete from book_category where category_id = #{categoryId} and book_id = #{bookId}")
-    void delete(BookCategory bookCategory);
+    void delete(Long bookId, Integer categoryId);
 
     @Update("update book_category set category_id = #{categoryId},book_id = #{bookId} where category_id = #{categoryId} and book_id = #{bookId}")
     void update(BookCategory bookCategory);

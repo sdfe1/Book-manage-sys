@@ -1,9 +1,10 @@
-package com.zll.server.controller.admin;
+package com.zll.server.controller.user;
 
 import com.zll.common.context.BaseContext;
 import com.zll.common.result.Result;
 import com.zll.pojo.vo.UserVO;
 import com.zll.server.service.FollowService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/users/{userId}")
+@Tag(name = "USER-关注用户功能")
 @RequiredArgsConstructor
 public class FollowController {
 

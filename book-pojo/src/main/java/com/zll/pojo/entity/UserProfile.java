@@ -2,9 +2,7 @@ package com.zll.pojo.entity;
 
 import com.zll.pojo.em.Gender;
 import com.zll.pojo.em.PrivacyLevel;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,7 +17,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Entity
 public class UserProfile {
+    @Id
     private Long userId;
 
     @Enumerated(EnumType.STRING)

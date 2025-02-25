@@ -1,9 +1,10 @@
-package com.zll.server.controller.admin;
+package com.zll.server.controller.user;
 
 import com.zll.common.result.Result;
 import com.zll.pojo.dto.UserProfileDTO;
 import com.zll.pojo.entity.UserProfile;
 import com.zll.server.service.UserProfileService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/users/{userId}/profile")
+@Tag(name = "USER-个人资料功能")
 @Validated
 @RequiredArgsConstructor
 public class UserProfileController {
@@ -52,7 +54,4 @@ public class UserProfileController {
         userProfileService.updateUserProfile(userId, userProfileDTO);
         return Result.success();
     }
-
-
-
 }

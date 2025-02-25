@@ -1,5 +1,7 @@
 package com.zll.server.service.impl;
 
+import com.zll.common.enumeration.CommonErrorCodeEnum;
+import com.zll.common.exception.base.BaseException;
 import com.zll.pojo.entity.Follow;
 import com.zll.pojo.vo.UserVO;
 import com.zll.server.mapper.FollowMapper;
@@ -27,7 +29,7 @@ public class FollowServiceImpl implements FollowService {
     @Override
     public void followUser(Long currentUserId, Long userId) {
         if (currentUserId.equals(userId)) {
-            throw new RuntimeException("不能关注自己");
+            throw new BaseException(CommonErrorCodeEnum.CONCURRENT_CONFLICT,"不能关注自己");
         }
         Follow follow = Follow.builder()
                 .followerId(currentUserId)

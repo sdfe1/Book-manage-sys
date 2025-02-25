@@ -3,8 +3,8 @@ package com.zll.server.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.zll.common.enumeration.CommonErrorCodeEnum;
-import com.zll.common.exception.book.BookErrorException;
-import com.zll.common.exception.category.CategoryErrorException;
+import com.zll.common.exception.base.BaseException;
+
 import com.zll.common.result.PageResult;
 import com.zll.pojo.dto.BookCategoryQueryDTO;
 import com.zll.pojo.entity.BookCategory;
@@ -30,31 +30,8 @@ public class BookCategoryServiceImpl implements BookCategoryService {
 
     @Autowired
     private CategoryMapper categoryMapper;
-    @Override
-    public void addBookCategory(BookCategory bookCategory) {
-        //判断书本id是否存在
-        if (bookMapper.getBookById(bookCategory.getBookId()) == null) {
-            throw new BookErrorException(CommonErrorCodeEnum.NOT_FOUND, "书不存在");
-        }
-        if (categoryMapper.selectById(bookCategory.getCategoryId()) == null) {
-            throw new CategoryErrorException(CommonErrorCodeEnum.NOT_FOUND, "分类不存在");
-        }
-        //判断分类Id是否存在
-        bookCategoryMapper.insert(bookCategory);
-    }
 
-    @Override
-    public void deleteBookCategory(BookCategory bookCategory) {
-        if (bookMapper.getBookById(bookCategory.getBookId()) == null) {
-            throw new BookErrorException(CommonErrorCodeEnum.NOT_FOUND, "书不存在");
-        }
-        if (categoryMapper.selectById(bookCategory.getCategoryId()) == null) {
-            throw new CategoryErrorException(CommonErrorCodeEnum.NOT_FOUND, "分类不存在");
-        }
-        bookCategoryMapper.delete(bookCategory);
-    }
-
-    @Override
+    /*@Override
     public void updateBookCategory(BookCategory bookCategory) {
         if (bookMapper.getBookById(bookCategory.getBookId()) == null) {
             throw new BookErrorException(CommonErrorCodeEnum.NOT_FOUND, "书不存在");
@@ -63,12 +40,12 @@ public class BookCategoryServiceImpl implements BookCategoryService {
             throw new CategoryErrorException(CommonErrorCodeEnum.NOT_FOUND, "分类不存在");
         }
         bookCategoryMapper.update(bookCategory);
-    }
+    }*/
 
     @Override
     public Integer getCategoryByBookId(Long bookId) {
         if (bookMapper.getBookById(bookId) == null) {
-            throw new BookErrorException(CommonErrorCodeEnum.NOT_FOUND, "书不存在");
+            throw new BaseException(CommonErrorCodeEnum.NOT_FOUND, "书不存在");
         }
         BookCategory bookCategory = bookCategoryMapper.selectByBookId(bookId);
         return bookCategory.getCategoryId();
@@ -77,7 +54,7 @@ public class BookCategoryServiceImpl implements BookCategoryService {
     @Override
     public PageResult getBookByCategoryId(BookCategoryQueryDTO bookCategoryQueryDTO) {
         if (categoryMapper.selectById(bookCategoryQueryDTO.getCategoryId()) == null) {
-            throw new CategoryErrorException(CommonErrorCodeEnum.NOT_FOUND, "分类不存在");
+            throw new BaseException(CommonErrorCodeEnum.NOT_FOUND, "分类不存在");
         }
         //根据分类Id查到具体的Book表
         PageHelper.startPage(bookCategoryQueryDTO.getPage(), bookCategoryQueryDTO.getPageSize());
@@ -87,5 +64,29 @@ public class BookCategoryServiceImpl implements BookCategoryService {
         long total = page.getTotal();
         List<BookVO> records= page.getResult();
         return new PageResult(total,records);
+    }
+
+    @Override
+    public void addBookCategory(Long bookId, Integer categoryId) {
+        //判断书本id是否存在
+        if (bookMapper.getBookById(bookId) == null) {
+            throw new BaseException(CommonErrorCodeEnum.NOT_FOUND, "书不存在");
+        }
+        if (categoryMapper.selectById(categoryId) == null) {
+            throw new BaseException(CommonErrorCodeEnum.NOT_FOUND, "分类不存在");
+        }
+        //判断分类Id是否存在
+        bookCategoryMapper.insert(bookId, categoryId);
+    }
+
+    @Override
+    public void deleteBookCategory(Long bookId, Integer categoryId) {
+        if (bookMapper.getBookById(bookId) == null) {
+            throw new BaseException(CommonErrorCodeEnum.NOT_FOUND, "书不存在");
+        }
+        if (categoryMapper.selectById(categoryId) == null) {
+            throw new BaseException(CommonErrorCodeEnum.NOT_FOUND, "分类不存在");
+        }
+        bookCategoryMapper.delete(bookId, categoryId);
     }
 }

@@ -6,7 +6,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.zll.common.context.BaseContext;
 import com.zll.common.enumeration.CommonErrorCodeEnum;
-import com.zll.common.exception.book.BookErrorException;
+import com.zll.common.exception.base.BaseException;
 import com.zll.common.result.PageResult;
 import com.zll.pojo.dto.BookDTO;
 import com.zll.pojo.dto.BookPageQueryDTO;
@@ -39,7 +39,7 @@ public class BookServiceImpl implements BookService {
     public void addBook(BookDTO bookDTO) {
         //1.判断ISBN是否唯一
         if (bookMapper.ISBNExists(bookDTO.getIsbn()) == null) {
-            throw new BookErrorException(CommonErrorCodeEnum.ALREADY_EXISTS,"ISBN已存在");
+            throw new BaseException(CommonErrorCodeEnum.ALREADY_EXISTS,"ISBN已存在");
         }
         //2.BookDTO转Book
         Book book = Book.builder()
@@ -68,7 +68,7 @@ public class BookServiceImpl implements BookService {
     public void deleteBook(Long id) {
         int rows = bookMapper.deleteBook(id);
         if (rows == 0) {
-            throw new BookErrorException(CommonErrorCodeEnum.NOT_FOUND,"图书不存在");
+            throw new BaseException(CommonErrorCodeEnum.NOT_FOUND,"图书不存在");
         }
     }
 
@@ -76,7 +76,7 @@ public class BookServiceImpl implements BookService {
     public Book getBookById(Long id) {
         Book book= bookMapper.getBookById(id);
         if (book == null) {
-            throw new BookErrorException(CommonErrorCodeEnum.NOT_FOUND,"书不存在");
+            throw new BaseException(CommonErrorCodeEnum.NOT_FOUND,"图书不存在");
         }
         return book;
     }
@@ -91,7 +91,7 @@ public class BookServiceImpl implements BookService {
         // 1. 查询当前书本信息
         Book oldBook = bookMapper.getBookById(bookDTO.getId());
         if (oldBook == null) {
-            throw new BookErrorException(CommonErrorCodeEnum.NOT_FOUND,"图书不存在");
+            throw new BaseException(CommonErrorCodeEnum.NOT_FOUND,"图书不存在");
         }
         //2. BookDTO转Book
         Book book = new Book();
@@ -101,7 +101,7 @@ public class BookServiceImpl implements BookService {
         // 3. 更新数据
         int rows = bookMapper.updateBook(book);
         if (rows == 0) {
-            throw new BookErrorException(CommonErrorCodeEnum.CONCURRENT_CONFLICT,"数据已被修改，请刷新后重试");
+            throw new BaseException(CommonErrorCodeEnum.CONCURRENT_CONFLICT,"数据已被修改，请刷新后重试");
         }
     }
 

@@ -1,10 +1,11 @@
-package com.zll.server.controller.admin;
+package com.zll.server.controller.user;
 
 import com.zll.common.result.PageResult;
 import com.zll.common.result.Result;
 import com.zll.pojo.dto.BookDTO;
 import com.zll.pojo.dto.FavoritePageQueryDTO;
 import com.zll.server.service.FavoriteBookService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/users/{userId}/favorites")
+@Tag(name = "USER-收藏书籍功能")
 @Validated
 @RequiredArgsConstructor
 public class FavoriteBookController {

@@ -1,5 +1,9 @@
 package com.zll.server.handler;
 
+import cn.dev33.satoken.exception.NotLoginException;
+import cn.dev33.satoken.exception.NotPermissionException;
+import cn.dev33.satoken.exception.NotRoleException;
+import cn.dev33.satoken.exception.SaTokenException;
 import com.zll.common.exception.base.BaseException;
 import com.zll.common.result.Result;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +24,17 @@ public class GlobalExceptionHandler {
         return Result.error(ex.getCode(), ex.getMsg());
     }
 
+
+
+    @ExceptionHandler({
+            NotLoginException.class,
+            NotRoleException.class,
+            NotPermissionException.class
+    })
+    public Result handleSaTokenException(SaTokenException ex) {
+
+        return Result.error(ex.getCode(), ex.getMessage());
+    }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Result handleValidationException(MethodArgumentNotValidException ex) {
         String errorMsg = ex.getBindingResult()

@@ -6,28 +6,31 @@ import com.zll.pojo.dto.BookDTO;
 import com.zll.pojo.dto.BookPageQueryDTO;
 import com.zll.pojo.entity.Book;
 import com.zll.pojo.vo.BookVO;
+import com.zll.server.service.BookCategoryService;
 import com.zll.server.service.BookService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-
 /**
- * 书本相关的控制器
+ * 图书管理控制器
  */
 @RestController
-@RequestMapping("/books")
+@RequestMapping("/admin/books")
+@Tag(name = "ADMIN-图书管理")
 @RequiredArgsConstructor
 @Slf4j
-public class BookController {
+public class AdminBookController {
 
     private final BookService bookService;
 
+    private final BookCategoryService bookCategoryService;
+
+    //====================某本书的增删改查==================== //
     /**
      * 新增图书
      * @param bookDTO
@@ -58,6 +61,7 @@ public class BookController {
      * @return
      */
     @PutMapping("/{id}")
+
     public Result updateBook(@Valid @RequestBody BookDTO bookDTO,@PathVariable @Min(1) Long id) {
         log.info("bookDTO:{}",bookDTO);
         bookDTO.setId(id);
@@ -101,4 +105,33 @@ public class BookController {
         return Result.success(bookVO);
     }
 
+
+    // ==================== 某本书的分类管理 ==================== //
+
+    //为图书设置分类
+    @PostMapping("/{bookId}/categories/{categoryId}")
+    public Result addBookCategory(@PathVariable Long bookId, @PathVariable Integer categoryId) {
+        bookCategoryService.addBookCategory(bookId, categoryId);
+        return Result.success();
+    }
+
+    @DeleteMapping("/{bookId}/categories/{categoryId}")
+    //为图书删除分类
+    public Result deleteBookCategory(@PathVariable Long bookId, @PathVariable Integer categoryId) {
+        bookCategoryService.deleteBookCategory(bookId, categoryId);
+        return Result.success();
+    }
+
+    /*//更新图书分类信息
+    @PutMapping("//{bookId}/categories/{categoryId}")
+    public Result updateBookCategory() {
+        bookCategoryService.updateBookCategory();
+        return Result.success();
+    }*/
+
+    //获取图书的分类
+    @GetMapping("/{bookId}/categories")
+    public Result<Integer> getCategoryByBookId( @PathVariable Long bookId) {
+        return Result.success(bookCategoryService.getCategoryByBookId(bookId));
+    }
 }

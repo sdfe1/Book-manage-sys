@@ -5,6 +5,9 @@ import lombok.Getter;
 
 import java.text.MessageFormat;
 
+/**
+ * 基本异常类
+ */
 @Getter
 public class BaseException extends RuntimeException{
 

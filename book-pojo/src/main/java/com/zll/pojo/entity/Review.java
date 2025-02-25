@@ -1,6 +1,7 @@
 package com.zll.pojo.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,12 +16,22 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Entity
 public class Review {
+    @Id
     private Long id;
+
     private Long bookId;
+
     private Long userId;
+
     private Long parentId;
+
     private String content;
+
     private byte rating;
+
     private LocalDateTime createTime;
+
+
 }

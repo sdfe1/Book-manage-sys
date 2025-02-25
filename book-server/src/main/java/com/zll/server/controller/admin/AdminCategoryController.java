@@ -4,30 +4,33 @@ import com.zll.common.result.PageResult;
 import com.zll.common.result.Result;
 import com.zll.common.validation.CreateGroup;
 import com.zll.common.validation.UpdateGroup;
+import com.zll.pojo.dto.BookCategoryQueryDTO;
 import com.zll.pojo.dto.CategoryDTO;
 import com.zll.pojo.dto.CategoryPageQueryDTO;
-import com.zll.pojo.entity.Book;
 import com.zll.pojo.entity.Category;
+import com.zll.server.service.BookCategoryService;
 import com.zll.server.service.CategoryService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * 分类相关接口
  */
 @RestController
-@RequestMapping("/categories")
+@RequestMapping("/admin/categories")
+@Tag(name = "ADMIN-分类管理")
 @RequiredArgsConstructor
-public class CategoryController {
+public class AdminCategoryController {
 
     private final CategoryService categoryService;
 
+    private final BookCategoryService bookCategoryService;
+
+    //======================分类的增删改查=======================//
     /**
      * 新增分类
      * @param categoryDTO
@@ -76,17 +79,7 @@ public class CategoryController {
     //- `GET /api/categories`: 获取所有分类(前提：分页)
 
 
-
-
-
-
-    //`GET /api/books?categoryId=1`: 根据分类ID获取图书
-    @GetMapping
-    public Result<List<Book>> getBooksByCategoryId(@RequestParam int categoryId) {
-        
-        return Result.success();
-    }
-
+   //分页功能
 
     @GetMapping("/page")
     public Result<PageResult> page(
@@ -96,6 +89,15 @@ public class CategoryController {
 
         CategoryPageQueryDTO categoryPageQueryDTO = new CategoryPageQueryDTO(page, pageSize, name);
         PageResult pageResult = categoryService.pageQuery(categoryPageQueryDTO);
+        return Result.success(pageResult);
+    }
+
+    //根据分类id获取图书信息
+    @GetMapping("/{categoryId}/books")
+    public Result<PageResult> getBookByCategoryId( @PathVariable Integer categoryId,   // 从 URL 中获取 categoryId
+                                                   @RequestParam("page") int page,     // 从查询参数中获取分页参数 page
+                                                   @RequestParam("pageSize") int pageSize) {
+        PageResult pageResult = bookCategoryService.getBookByCategoryId(new BookCategoryQueryDTO(page, pageSize,categoryId));
         return Result.success(pageResult);
     }
 }

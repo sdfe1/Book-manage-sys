@@ -3,19 +3,17 @@ package com.zll.server.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.zll.common.enumeration.CommonErrorCodeEnum;
-import com.zll.common.exception.ReviewErrorException;
+import com.zll.common.exception.base.BaseException;
 import com.zll.common.result.PageResult;
 import com.zll.pojo.dto.ReviewPageQueryDTO;
 import com.zll.pojo.entity.Review;
 import com.zll.pojo.dto.ReviewDTO;
-import com.zll.pojo.vo.BookVO;
 import com.zll.server.mapper.ReviewMapper;
 import com.zll.server.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * 评论功能服务实现类
@@ -67,7 +65,7 @@ public class ReviewServiceImpl implements ReviewService {
     public void addReplies(Long reviewId, ReviewDTO reviewDTO) {
         Review parentReview = reviewMapper.selectById(reviewId);
         if (parentReview == null) {
-           throw new ReviewErrorException(CommonErrorCodeEnum.NOT_FOUND, "评论不存在");
+           throw new BaseException(CommonErrorCodeEnum.NOT_FOUND, "评论不存在");
         }
         Review review = Review.builder()
                 .userId(reviewDTO.getUserId())
@@ -89,8 +87,8 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public void deleteReview(Long bookId, Long reviewId) {
         Review review = reviewMapper.selectById(reviewId);
-       if (review == null || !review.getBookId().equals(bookId)) {
-            throw new ReviewErrorException(CommonErrorCodeEnum.NOT_FOUND,"评论不存在或无权删除");
+        if (review == null || !review.getBookId().equals(bookId)) {
+            throw new BaseException(CommonErrorCodeEnum.NOT_FOUND,"评论不存在或无权删除");
         }
         reviewMapper.deleteReview(reviewId);
     }

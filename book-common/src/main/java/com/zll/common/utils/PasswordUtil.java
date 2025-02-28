@@ -2,6 +2,9 @@ package com.zll.common.utils;
 
 import cn.dev33.satoken.secure.BCrypt;
 
+/**
+ * 用户密码工具类
+ */
 public class PasswordUtil {
     // 生成加盐并加密的密码
     public static String hashPassword(String password) {

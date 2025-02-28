@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 
+/**
+ * 性别枚举
+ */
 @Getter
 @AllArgsConstructor
 public enum Gender {

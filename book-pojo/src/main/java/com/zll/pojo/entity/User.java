@@ -13,37 +13,46 @@ import java.time.LocalDateTime;
 /**
  * 用户实体
  */
-@Entity
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
-    @Id
+
     private Long id;
 
+    /**
+     * 用户名
+     */
     private String username;
 
+    /**
+     * 密码
+     */
     private String password;
 
-
+    /**
+     * 头像
+     */
     private String avatar;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false, columnDefinition = "ENUM('USER', 'ADMIN') DEFAULT 'USER'")
+    /**
+     * 角色（USER ADMIN）
+     */
     private RoleEnum role;
 
-    private LocalDateTime createTime;
-
     /**
-     * 可登录状态: ENABLE =1启用 DISABLE =0禁用
+     * 可登录状态: 1启用 0禁用
      */
     private Integer isLogin;
 
     /**
-     * 禁言状态：ENABLE =1启用 DISABLE =0禁用
+     * 禁言状态：1启用 0禁用
      */
     private Integer isWord;
 
-
+    /**
+     * 注册时间
+     */
+    private LocalDateTime createTime;
 }

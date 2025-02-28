@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
- * 评论
+ * 评论DTO
  */
 @Data
 @AllArgsConstructor

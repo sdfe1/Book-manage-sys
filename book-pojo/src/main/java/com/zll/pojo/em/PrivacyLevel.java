@@ -6,19 +6,21 @@ import lombok.Getter;
 
 import javax.annotation.processing.Generated;
 
+/**
+ * 隐私类别枚举
+ */
 @Getter
 @AllArgsConstructor
 public enum PrivacyLevel {
     PUBLIC((byte) 1, "公开"),
-    FRIENDS_ONLY((byte) 2, "好友可见"),
-    PRIVATE((byte) 3, "私密");
+    PRIVATE((byte) 2, "私密");
 
     private final byte code;
     private final String desc;
     @JsonCreator
     public static PrivacyLevel fromString(String value) {
         if (value == null || value.isEmpty()) {
-            return PUBLIC; // 或者 PUBLIC，根据你的业务需求
+            return PUBLIC;
         }
         return PrivacyLevel.valueOf(value.toUpperCase());
     }

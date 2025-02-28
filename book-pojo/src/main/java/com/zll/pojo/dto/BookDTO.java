@@ -7,6 +7,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 
+/**
+ * 图书DTO
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,13 +23,11 @@ public class BookDTO {
     @ISBN13(message = "isbn格式错误")
     private String isbn;
 
-    @NotBlank(message = "出版社不能为空")
     private String publisher;
 
     @NotBlank(message = "作者不能为空")
     private String author;
 
-    @NotBlank(message = "出版日期不能为空")
     @Pattern(
             regexp = "^\\d{4}-(0[1-9]|1[0-2])$",
             message = "出版日期格式必须为YYYY-MM（如1990-08）"

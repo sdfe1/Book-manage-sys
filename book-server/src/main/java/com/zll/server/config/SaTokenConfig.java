@@ -9,6 +9,9 @@ import com.zll.common.result.Result;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ *
+ */
 @Configuration
 public class SaTokenConfig {
     @Bean
@@ -22,7 +25,7 @@ public class SaTokenConfig {
 
                     // 最后处理全局登录校验
                     SaRouter.match("/**")
-                            .notMatch("/doc.html", "/webjars/**", "/v3/api-docs/**", "/auth/login", "/auth/register", "/swagger-ui.html")
+                            .notMatch("/doc.html", "/v3/api-docs/**", "/auth/login", "/auth/register", "/swagger-ui.html")
                             .check(StpUtil::checkLogin);
                 })
                 .setError(e -> {

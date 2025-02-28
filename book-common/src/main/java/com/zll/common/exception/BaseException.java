@@ -1,4 +1,4 @@
-package com.zll.common.exception.base;
+package com.zll.common.exception;
 
 import com.zll.common.enumeration.CommonErrorCodeEnum;
 import lombok.Getter;

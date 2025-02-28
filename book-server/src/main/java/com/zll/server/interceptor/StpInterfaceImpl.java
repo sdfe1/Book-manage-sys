@@ -2,7 +2,7 @@ package com.zll.server.interceptor;
 
 import cn.dev33.satoken.stp.StpInterface;
 import com.zll.common.enumeration.CommonErrorCodeEnum;
-import com.zll.common.exception.auth.AccountNameException;
+import com.zll.common.exception.BaseException;
 import com.zll.pojo.entity.User;
 import com.zll.server.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +37,7 @@ public class StpInterfaceImpl implements StpInterface {
         Long id = Long.parseLong((String) loginId);
         User user = userMapper.getUserById(id);
         if (user == null) {
-            throw new AccountNameException(CommonErrorCodeEnum.NOT_FOUND, "用户不存在");
+            throw new BaseException(CommonErrorCodeEnum.NOT_FOUND, "用户不存在");
         }
         String name = user.getRole().name();
         return Collections.singletonList(name);

@@ -2,8 +2,6 @@ package com.zll.server.controller.admin;
 
 import com.zll.common.result.PageResult;
 import com.zll.common.result.Result;
-import com.zll.common.validation.CreateGroup;
-import com.zll.common.validation.UpdateGroup;
 import com.zll.pojo.dto.BookCategoryQueryDTO;
 import com.zll.pojo.dto.CategoryDTO;
 import com.zll.pojo.dto.CategoryPageQueryDTO;
@@ -18,7 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * 分类相关接口
+ * 分类管理控制器
  */
 @RestController
 @RequestMapping("/admin/categories")
@@ -30,14 +28,13 @@ public class AdminCategoryController {
 
     private final BookCategoryService bookCategoryService;
 
-    //======================分类的增删改查=======================//
     /**
      * 新增分类
      * @param categoryDTO
      * @return
      */
     @PostMapping
-    public Result addCategory(@Validated(CreateGroup.class) @RequestBody CategoryDTO categoryDTO) {
+    public Result addCategory(@Validated @RequestBody CategoryDTO categoryDTO) {
         categoryService.addCategory(categoryDTO);
         return Result.success();
     }
@@ -55,6 +52,11 @@ public class AdminCategoryController {
         return Result.success();
     }
 
+    /**
+     * 获取分类
+     * @param id 查询的分类Id
+     * @return
+     */
     @GetMapping("/{id}")
     public Result<String> getCategory(@PathVariable int id) {
         Category category = categoryService.getCategoryByID(id);
@@ -68,7 +70,6 @@ public class AdminCategoryController {
      * @return
      */
     @PutMapping("/{id}")
-    @Validated(UpdateGroup.class)
     public Result updateCategory(@PathVariable @Min(value = 1, message = "ID必须为正数") int id,  @RequestBody @Valid CategoryDTO categoryDTO) {
         categoryDTO.setId(id);
         categoryService.updateCategory(categoryDTO);
@@ -76,13 +77,15 @@ public class AdminCategoryController {
     }
 
 
-    //- `GET /api/categories`: 获取所有分类(前提：分页)
-
-
-   //分页功能
-
-    @GetMapping("/page")
-    public Result<PageResult> page(
+    /**
+     * 获取所有分类
+     * @param page
+     * @param pageSize
+     * @param name
+     * @return
+     */
+    @GetMapping
+    public Result<PageResult> getCategories(
             @RequestParam("page") int page,
             @RequestParam("pageSize") int pageSize,
             @RequestParam(value = "name", defaultValue = "") String name) {
@@ -92,10 +95,17 @@ public class AdminCategoryController {
         return Result.success(pageResult);
     }
 
-    //根据分类id获取图书信息
+
+    /**
+     * 根据分类Id获取图书
+     * @param categoryId
+     * @param page
+     * @param pageSize
+     * @return
+     */
     @GetMapping("/{categoryId}/books")
-    public Result<PageResult> getBookByCategoryId( @PathVariable Integer categoryId,   // 从 URL 中获取 categoryId
-                                                   @RequestParam("page") int page,     // 从查询参数中获取分页参数 page
+    public Result<PageResult> getBookByCategoryId( @PathVariable Integer categoryId,
+                                                   @RequestParam("page") int page,
                                                    @RequestParam("pageSize") int pageSize) {
         PageResult pageResult = bookCategoryService.getBookByCategoryId(new BookCategoryQueryDTO(page, pageSize,categoryId));
         return Result.success(pageResult);

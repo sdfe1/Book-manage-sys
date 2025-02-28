@@ -9,6 +9,9 @@ import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
+/**
+ * 关注接口
+ */
 @Mapper
 public interface FollowMapper {
 

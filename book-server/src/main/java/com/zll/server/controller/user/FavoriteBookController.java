@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * 收藏书籍
+ * 收藏书籍功能控制
+ *
  */
 @RestController
 @RequestMapping("/users/{userId}/favorites")

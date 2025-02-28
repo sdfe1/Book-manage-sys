@@ -58,7 +58,6 @@ public class FollowController {
         return Result.success(followers);
     }
 
-
     /**
      * 获取用户关注的列表
      * @param userId

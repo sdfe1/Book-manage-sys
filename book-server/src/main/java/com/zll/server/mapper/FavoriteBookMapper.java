@@ -8,6 +8,9 @@ import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
+/**
+ * 图书收藏接口
+ */
 @Mapper
 public interface FavoriteBookMapper {
 

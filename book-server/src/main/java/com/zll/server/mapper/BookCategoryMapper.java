@@ -6,6 +6,9 @@ import com.zll.pojo.entity.BookCategory;
 import com.zll.pojo.vo.BookVO;
 import org.apache.ibatis.annotations.*;
 
+/**
+ * 图书分类关联接口
+ */
 @Mapper
 public interface BookCategoryMapper {
 

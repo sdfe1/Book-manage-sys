@@ -18,7 +18,7 @@ public class ISBN13Validator implements ConstraintValidator<ISBN13, String> {
         if (cleanedIsbn.length() != 13) {
             return false;
         }
-        // 校验位计算逻辑（与你的工具类一致）
+        // 校验位计算逻辑
         int total = 0;
         for (int i = 0; i < 12; i++) {
             int digit = Character.getNumericValue(cleanedIsbn.charAt(i));

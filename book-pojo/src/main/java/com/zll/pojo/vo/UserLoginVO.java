@@ -5,6 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * 用户登录返回对象
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

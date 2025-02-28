@@ -13,31 +13,50 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 
-
+/**
+ * 书本实体类
+ */
 @Data
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class Book {
-    @Id
+
     private Long id;
 
+    /**
+     * 书名
+     */
     private String title;
 
+    /**
+     * ISBN号
+     */
     private String isbn;
 
-    //出版社
+    /**
+     * 出版社
+     */
     private String publisher;
 
+    /**
+     * 作者
+     */
     private String author;
 
-    //出本日期
+    /**
+     * 出版日期
+     */
     private String publishDate;
 
+    /**
+     * 价格
+     */
     private BigDecimal price;
 
-    // 库存
+    /**
+     * 库存数量
+     */
     private int stock;
 
     private LocalDateTime createTime;
@@ -47,6 +66,5 @@ public class Book {
     private Long updateUser;
 
     private Long createUser;
-
-    private Integer version;
+    
 }

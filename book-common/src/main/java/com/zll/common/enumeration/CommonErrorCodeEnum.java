@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 
+/**
+ * 通用错误码枚举
+ */
 @Getter
 @AllArgsConstructor
 public enum CommonErrorCodeEnum {

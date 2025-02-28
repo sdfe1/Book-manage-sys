@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
+/**
+ * 图书VO
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

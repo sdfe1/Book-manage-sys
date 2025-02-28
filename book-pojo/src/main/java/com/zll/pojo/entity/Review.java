@@ -16,9 +16,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity
 public class Review {
-    @Id
+
     private Long id;
 
     private Long bookId;

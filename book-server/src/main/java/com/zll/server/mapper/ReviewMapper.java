@@ -8,6 +8,9 @@ import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
+/**
+ * 评论接口
+ */
 @Mapper
 public interface ReviewMapper {
     @Insert("insert into review(book_id,user_id,parent_id,content,rating,create_time) values(#{bookId},#{userId},#{parentId},#{content},#{rating},#{createTime})")

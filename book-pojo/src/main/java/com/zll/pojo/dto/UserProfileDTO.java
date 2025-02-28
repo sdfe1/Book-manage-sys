@@ -25,7 +25,6 @@ public class UserProfileDTO {
     @NotNull(message = "用户ID不能为空")
     private Long userId;
 
-    @Enumerated(EnumType.STRING)
     @NotNull(message = "性别不能为空")
     private Gender gender;
 
@@ -45,7 +44,6 @@ public class UserProfileDTO {
     /**
      * 隐私设置
      */
-    @Enumerated(EnumType.STRING)
     @NotNull(message = "隐私级别不能为空")
     private PrivacyLevel privacyLevel = PrivacyLevel.PUBLIC;
 

@@ -12,18 +12,25 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+/**
+ * 关注实体类
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity
 public class Follow {
 
-    @Id
+    /**
+     * 关注着（动作发出者）
+     */
     @NotNull(message = "被关注用户ID不能为空")
     @Min(value = 1, message = "用户ID不合法")
     private Long followerId;
 
+    /**
+     * 被关注着（动作承受者）
+     */
     @NotNull(message = "被关注用户ID不能为空")
     @Min(value = 1, message = "用户ID不合法")
     private Long followedId;

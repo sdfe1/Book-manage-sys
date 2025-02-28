@@ -1,13 +1,12 @@
 package com.zll.server.service.impl;
 
 import com.zll.common.enumeration.CommonErrorCodeEnum;
-import com.zll.common.exception.base.BaseException;
+import com.zll.common.exception.BaseException;
 import com.zll.pojo.entity.Follow;
 import com.zll.pojo.vo.UserVO;
 import com.zll.server.mapper.FollowMapper;
 import com.zll.server.service.FollowService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

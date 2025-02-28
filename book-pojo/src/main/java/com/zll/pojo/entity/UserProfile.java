@@ -17,22 +17,33 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity
 public class UserProfile {
-    @Id
+
     private Long userId;
 
-    @Enumerated(EnumType.STRING)
+    /**
+     * 性别
+     */
     private Gender gender;
 
+    /**
+     * 地址
+     */
     private String location;
 
-    private String bio;//个人简介
+    /**
+     * 个人简介
+     */
+    private String bio;
 
+    /**
+     * 兴趣
+     */
     private String interests;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, columnDefinition = "VARCHAR(20) DEFAULT 'PUBLIC'")
+    /**
+     * 隐私设置（PUBLIC,PRIVATE,）
+     */
     private PrivacyLevel privacyLevel = PrivacyLevel.PUBLIC;
 
     private LocalDateTime createTime;

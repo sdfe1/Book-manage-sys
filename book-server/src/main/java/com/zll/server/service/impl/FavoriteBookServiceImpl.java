@@ -3,7 +3,7 @@ package com.zll.server.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.zll.common.enumeration.CommonErrorCodeEnum;
-import com.zll.common.exception.base.BaseException;
+import com.zll.common.exception.BaseException;
 import com.zll.common.result.PageResult;
 import com.zll.pojo.dto.FavoritePageQueryDTO;
 import com.zll.pojo.entity.FavoriteBook;

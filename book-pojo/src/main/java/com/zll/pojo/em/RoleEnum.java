@@ -1,5 +1,8 @@
 package com.zll.pojo.em;
 
+/**
+ * 角色枚举
+ */
 public enum RoleEnum {
     USER("USER"),
     ADMIN("ADMIN");

@@ -1,10 +1,12 @@
 package com.zll.pojo.dto;
 
 import com.zll.common.result.PageRequest;
+import lombok.Getter;
 
 /**
  * 收藏页面查询参数
  */
+@Getter
 public class FavoritePageQueryDTO extends PageRequest {
 
     private Long userId;

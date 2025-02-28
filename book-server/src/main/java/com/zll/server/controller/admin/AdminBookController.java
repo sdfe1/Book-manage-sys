@@ -1,5 +1,6 @@
 package com.zll.server.controller.admin;
 
+
 import com.zll.common.result.PageResult;
 import com.zll.common.result.Result;
 import com.zll.pojo.dto.BookDTO;
@@ -13,6 +14,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +32,7 @@ public class AdminBookController {
 
     private final BookCategoryService bookCategoryService;
 
-    //====================某本书的增删改查==================== //
+
     /**
      * 新增图书
      * @param bookDTO
@@ -49,7 +51,7 @@ public class AdminBookController {
      */
     @DeleteMapping("/{id}")
     @Validated
-    public Result deleteBook(@PathVariable @Min(value = 1, message = "ID必须为正数") Long id){
+    public Result deleteBook(@PathVariable Long id){
         bookService.deleteBook(id);
         return Result.success();
     }
@@ -61,8 +63,7 @@ public class AdminBookController {
      * @return
      */
     @PutMapping("/{id}")
-
-    public Result updateBook(@Valid @RequestBody BookDTO bookDTO,@PathVariable @Min(1) Long id) {
+    public Result updateBook(@Valid @RequestBody BookDTO bookDTO,@PathVariable Long id) {
         log.info("bookDTO:{}",bookDTO);
         bookDTO.setId(id);
         bookService.updateBook(bookDTO);
@@ -78,8 +79,8 @@ public class AdminBookController {
      * @return
      */
     @GetMapping("/page")
-    public Result<PageResult> getBooks(@RequestParam("page")@Min(1) int page,
-                                       @RequestParam("pageSize")@Min(1) int pageSize,
+    public Result<PageResult> getBooks(@RequestParam("page") int page,
+                                       @RequestParam("pageSize") int pageSize,
                                        @RequestParam(value = "sort", defaultValue = "title,asc") String sort) {
         BookPageQueryDTO bookPageQueryDTO = new BookPageQueryDTO(page, pageSize, sort);
         PageResult pageResult = bookService.getBooks(bookPageQueryDTO);
@@ -87,49 +88,53 @@ public class AdminBookController {
     }
 
 
-    //获取单本图书信息
+    /**
+     * 获取单本图书信息
+     * @param id 图书id
+     * @return 统一响应
+     */
     @GetMapping("/{id}")
     public Result<BookVO> getBookById(@Valid @PathVariable Long id) {
         Book book = bookService.getBookById(id);
-        if (book == null) {
-            return Result.error(401,"Book not found for id: " );  // 返回合适的失败响应
-        }
-        BookVO bookVO = BookVO.builder()
-                .id(book.getId())
-                .title(book.getTitle())
-                .isbn(book.getIsbn())
-                .publisher(book.getPublisher())
-                .author(book.getAuthor())
-                .publishDate(book.getPublishDate())
-                .build();
+        BookVO bookVO = new BookVO();
+        BeanUtils.copyProperties(book,bookVO);
         return Result.success(bookVO);
     }
 
+    //图书数量统计
 
-    // ==================== 某本书的分类管理 ==================== //
 
-    //为图书设置分类
+    /**
+     * 为图书设置分类
+     * @param bookId 书本id
+     * @param categoryId 分类Id
+     * @return
+     */
     @PostMapping("/{bookId}/categories/{categoryId}")
     public Result addBookCategory(@PathVariable Long bookId, @PathVariable Integer categoryId) {
         bookCategoryService.addBookCategory(bookId, categoryId);
         return Result.success();
     }
 
+    /**
+     * 删除图书分类
+     * @param bookId 书本id
+     * @param categoryId 分类Id
+     * @return
+     */
     @DeleteMapping("/{bookId}/categories/{categoryId}")
-    //为图书删除分类
     public Result deleteBookCategory(@PathVariable Long bookId, @PathVariable Integer categoryId) {
         bookCategoryService.deleteBookCategory(bookId, categoryId);
         return Result.success();
     }
 
-    /*//更新图书分类信息
-    @PutMapping("//{bookId}/categories/{categoryId}")
-    public Result updateBookCategory() {
-        bookCategoryService.updateBookCategory();
-        return Result.success();
-    }*/
 
-    //获取图书的分类
+
+    /**
+     * 获取图书的分类
+     * @param bookId 书本id
+     * @return 统一响应
+     */
     @GetMapping("/{bookId}/categories")
     public Result<Integer> getCategoryByBookId( @PathVariable Long bookId) {
         return Result.success(bookCategoryService.getCategoryByBookId(bookId));

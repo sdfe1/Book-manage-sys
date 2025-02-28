@@ -1,13 +1,14 @@
 package com.zll.server.mapper;
 
 import com.github.pagehelper.Page;
-import com.zll.pojo.dto.BookDTO;
 import com.zll.pojo.dto.BookPageQueryDTO;
 import com.zll.pojo.entity.Book;
 import com.zll.pojo.vo.BookVO;
 import org.apache.ibatis.annotations.*;
-import org.springframework.stereotype.Service;
 
+/**
+ * 书籍持久化接口
+ */
 @Mapper
 public interface BookMapper {
 
@@ -16,17 +17,13 @@ public interface BookMapper {
             "(#{title},#{isbn},#{publisher},#{author},#{publishDate},#{price},#{stock},#{createTime},#{updateTime},#{createUser},#{updateUser})")
     void insert(Book book) ;
 
-
-
     @Delete("delete from book where id = #{id}")
-    int deleteBook(Long id);
+    void deleteBook(Long id);
 
     @Select("SELECT id, title, isbn, publisher, author, publish_date FROM book WHERE id = #{id}")
     Book getBookById(Long id);
 
-
-
-    int updateBook(Book book);
+    void updateBook(Book book);
 
     Page<BookVO> pageQuery(BookPageQueryDTO bookPageQueryDTO);
 

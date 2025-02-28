@@ -19,15 +19,13 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(authInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns(
-                        "/doc.html", "/webjars/**", "/v3/api-docs/**","/auth/login","/auth/register","/swagger-ui.html");
+                        "/doc.html",  "/v3/api-docs/**","/auth/login","/auth/register","/swagger-ui.html");
     }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // 配置拦截器访问静态资源
         registry.addResourceHandler("doc.html").addResourceLocations("classpath:/META-INF/resources/");
-        registry.addResourceHandler("/favicon.ico").addResourceLocations("classpath:/META-INF/resources/");
-        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 
 }

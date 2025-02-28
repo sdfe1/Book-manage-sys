@@ -1,10 +1,5 @@
 server:
   port: 8090
-  ssl:
-    enabled: true
-    key-store: classpath:keystore.p12
-    key-store-password: 123456
-
 
 springdoc:
   swagger-ui:

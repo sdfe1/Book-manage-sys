@@ -1,13 +1,14 @@
 package com.zll.server.service.impl;
 
 import com.zll.common.enumeration.CommonErrorCodeEnum;
-import com.zll.common.exception.base.BaseException;
+import com.zll.common.exception.BaseException;
 import com.zll.pojo.dto.UserProfileDTO;
 import com.zll.pojo.entity.UserProfile;
 import com.zll.server.mapper.UserMapper;
 import com.zll.server.mapper.UserProfileMapper;
 import com.zll.server.service.UserProfileService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 /**
@@ -48,14 +49,8 @@ public class UserProfileServiceImpl implements UserProfileService {
         if (userProfileMapper.getUserProfile(userId) == null) {
             throw new BaseException(CommonErrorCodeEnum.NOT_FOUND,"获取用户信息失败");
         }
-        UserProfile userProfile = UserProfile.builder()
-                .userId(userId)
-                .gender(userProfileDTO.getGender())
-                .location(userProfileDTO.getLocation())
-                .bio(userProfileDTO.getBio())
-                .interests(userProfileDTO.getInterests())
-                .privacyLevel(userProfileDTO.getPrivacyLevel())
-                .build();
+        UserProfile userProfile = new UserProfile();
+        BeanUtils.copyProperties(userProfileDTO, userProfile);
         userProfileMapper.updateUserProfile(userProfile);
     }
 }

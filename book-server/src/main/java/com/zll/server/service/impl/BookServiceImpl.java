@@ -6,7 +6,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.zll.common.context.BaseContext;
 import com.zll.common.enumeration.CommonErrorCodeEnum;
-import com.zll.common.exception.base.BaseException;
+import com.zll.common.exception.BaseException;
 import com.zll.common.result.PageResult;
 import com.zll.pojo.dto.BookDTO;
 import com.zll.pojo.dto.BookPageQueryDTO;
@@ -16,6 +16,7 @@ import com.zll.server.mapper.BookMapper;
 import com.zll.server.service.BookService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -38,25 +39,17 @@ public class BookServiceImpl implements BookService {
     @Override
     public void addBook(BookDTO bookDTO) {
         //1.判断ISBN是否唯一
-        if (bookMapper.ISBNExists(bookDTO.getIsbn()) == null) {
+        if (bookMapper.ISBNExists(bookDTO.getIsbn()) != null) {
             throw new BaseException(CommonErrorCodeEnum.ALREADY_EXISTS,"ISBN已存在");
         }
         //2.BookDTO转Book
-        Book book = Book.builder()
-                .title(bookDTO.getTitle())
-                .isbn(bookDTO.getIsbn())
-                .publisher(bookDTO.getPublisher())
-                .author(bookDTO.getAuthor())
-                .publishDate(bookDTO.getPublishDate())
-                .price(bookDTO.getPrice())
-                .stock(bookDTO.getStock())
-                .createTime(LocalDateTime.now())
-                .updateTime(LocalDateTime.now())
-                .createUser(BaseContext.getCurrentId())
-                .updateUser(BaseContext.getCurrentId())
-                .build();
+        Book book = new Book();
+        BeanUtils.copyProperties(bookDTO, book);
+        book.setCreateUser(BaseContext.getCurrentId());
+        book.setCreateTime(LocalDateTime.now());
         //3.插入数据
         bookMapper.insert(book);
+        log.info("图书添加成功，ID: {}", book.getId());
     }
 
     /**
@@ -66,12 +59,18 @@ public class BookServiceImpl implements BookService {
      */
     @Override
     public void deleteBook(Long id) {
-        int rows = bookMapper.deleteBook(id);
-        if (rows == 0) {
+        if (bookMapper.getBookById(id) == null) {
             throw new BaseException(CommonErrorCodeEnum.NOT_FOUND,"图书不存在");
         }
+        bookMapper.deleteBook(id);
+        log.info("图书删除成功，ID: {}", id);
     }
 
+    /**
+     * 根据id获取图书
+     * @param id
+     * @return
+     */
     @Override
     public Book getBookById(Long id) {
         Book book= bookMapper.getBookById(id);
@@ -89,20 +88,19 @@ public class BookServiceImpl implements BookService {
     @Override
     public void updateBook(BookDTO bookDTO) {
         // 1. 查询当前书本信息
-        Book oldBook = bookMapper.getBookById(bookDTO.getId());
-        if (oldBook == null) {
+        Book existingBook = bookMapper.getBookById(bookDTO.getId());
+        if (existingBook == null) {
             throw new BaseException(CommonErrorCodeEnum.NOT_FOUND,"图书不存在");
         }
         //2. BookDTO转Book
         Book book = new Book();
-        BeanUtil.copyProperties(bookDTO,book, CopyOptions.create().ignoreNullValue());
-        book.setUpdateTime(LocalDateTime.now());
+        BeanUtil.copyProperties(bookDTO,book);
         book.setUpdateUser(BaseContext.getCurrentId());
+        book.setUpdateTime(LocalDateTime.now());
         // 3. 更新数据
-        int rows = bookMapper.updateBook(book);
-        if (rows == 0) {
-            throw new BaseException(CommonErrorCodeEnum.CONCURRENT_CONFLICT,"数据已被修改，请刷新后重试");
-        }
+        bookMapper.updateBook(book);
+        log.info("图书更新成功，ID: {}", existingBook.getId());
+
     }
 
     /**
@@ -113,8 +111,6 @@ public class BookServiceImpl implements BookService {
     @Override
     public PageResult getBooks(BookPageQueryDTO bookPageQueryDTO) {
         PageHelper.startPage(bookPageQueryDTO.getPage(),bookPageQueryDTO.getPageSize());
-
-        //下一条sql进行分页，自动加入limit关键字分页
         Page<BookVO> page =  bookMapper.pageQuery(bookPageQueryDTO);
         return new PageResult(
                 page.getTotal(),

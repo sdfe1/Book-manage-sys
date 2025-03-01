@@ -18,15 +18,4 @@ public class PasswordUtil {
         return BCrypt.checkpw(password, hashedPassword);
     }
 
-    public static void main(String[] args) {
-        String password = "my_secure_password";
-
-        // 注册时加密并存储密码
-        String hashedPassword = hashPassword(password);
-        System.out.println("加密后的密码: " + hashedPassword);
-
-        // 登录时验证密码
-        boolean isValid = verifyPassword(password, hashedPassword);
-        System.out.println("密码是否正确: " + isValid);
-    }
 }

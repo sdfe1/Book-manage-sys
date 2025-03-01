@@ -2,7 +2,7 @@ package com.zll.common.context;
 
 
 /**
- *
+ 上下文工具类
  */
 public class BaseContext {
 

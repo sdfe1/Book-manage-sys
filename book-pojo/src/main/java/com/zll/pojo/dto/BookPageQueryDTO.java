@@ -19,9 +19,11 @@ public class BookPageQueryDTO implements Serializable {
     //每页记录数
     private int pageSize;
 
+    /**
+     * 仅支持单个字段加排序<字段>,<方向>
+     */
     private String sort;
 
-    // 通过 Getter 方法动态解析 sort 字段
     public String getSortField() {
         String[] parts = this.sort.split(",");
         String field = parts[0];

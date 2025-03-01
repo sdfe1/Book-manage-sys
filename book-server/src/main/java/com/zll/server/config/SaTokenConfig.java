@@ -22,11 +22,8 @@ public class SaTokenConfig {
         return new SaServletFilter()
                 .addInclude("/**")
                 .setAuth(obj -> {
-                    // 先校验角色，再校验登录
                     SaRouter.match("/admin/**").check(r -> StpUtil.checkRole("ADMIN"));
                     SaRouter.match("/user/**", "/users/**").check(r -> StpUtil.checkRole("USER"));
-
-                    // 最后处理全局登录校验
                     SaRouter.match("/**")
                             .notMatch("/doc.html", "/v3/api-docs/**", "/auth/login", "/auth/register", "/swagger-ui.html")
                             .check(StpUtil::checkLogin);

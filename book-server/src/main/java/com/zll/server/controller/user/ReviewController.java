@@ -6,6 +6,7 @@ import com.zll.pojo.dto.ReviewPageQueryDTO;
 import com.zll.pojo.entity.Review;
 import com.zll.pojo.dto.ReviewDTO;
 import com.zll.server.service.ReviewService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -32,6 +33,7 @@ public class ReviewController {
      * @param reviewDTO
      * @returnc
      */
+    @Operation(summary = "添加评论")
     @PostMapping
     public Result addReview(@PathVariable Long bookId, @Valid @RequestBody ReviewDTO reviewDTO) {
         reviewService.addReview(bookId, reviewDTO);
@@ -43,6 +45,7 @@ public class ReviewController {
      * @param bookId
      * @return
      */
+    @Operation(summary = "获取图书的评论")
     @GetMapping
     public Result<PageResult> getReviews(
             @RequestParam("page") int page,
@@ -55,12 +58,13 @@ public class ReviewController {
 
 
     /**
-     * 添加评论
+     * 回复评论
      * @param bookId
      * @param reviewId
      * @param reviewDTO
      * @return
      */
+    @Operation(summary = "回复评论")
     @PostMapping("/{reviewId}/replies")
     public Result addReply(@PathVariable Long bookId, @PathVariable Long reviewId,@Valid @RequestBody ReviewDTO reviewDTO) {
         reviewService.addReplies(reviewId, reviewDTO);
@@ -74,6 +78,7 @@ public class ReviewController {
      * @param reviewId
      * @return
      */
+    @Operation(summary = "删除评论")
     @DeleteMapping("/{reviewId}")
     public Result deleteReview(@PathVariable Long bookId, @PathVariable Long reviewId) {
         reviewService.deleteReview(bookId, reviewId);

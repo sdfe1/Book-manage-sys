@@ -8,6 +8,7 @@ import com.zll.pojo.dto.CategoryPageQueryDTO;
 import com.zll.pojo.entity.Category;
 import com.zll.server.service.BookCategoryService;
 import com.zll.server.service.CategoryService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -33,6 +34,7 @@ public class AdminCategoryController {
      * @param categoryDTO
      * @return
      */
+    @Operation(summary = "新增分类")
     @PostMapping
     public Result addCategory(@Validated @RequestBody CategoryDTO categoryDTO) {
         categoryService.addCategory(categoryDTO);
@@ -45,18 +47,20 @@ public class AdminCategoryController {
      * @param id 待删除分类的id
      * @return
      */
+    @Operation(summary = "删除分类")
     @DeleteMapping("/{id}")
     @Validated
-    public Result deleteCategory(@PathVariable @Min(value = 1, message = "ID必须为正数") int id) {
+    public Result deleteCategory(@PathVariable  int id) {
         categoryService.deleteCategory(id);
         return Result.success();
     }
 
     /**
-     * 获取分类
+     * 根据id获取分类
      * @param id 查询的分类Id
      * @return
      */
+    @Operation(summary = "根据id获取分类")
     @GetMapping("/{id}")
     public Result<String> getCategory(@PathVariable int id) {
         Category category = categoryService.getCategoryByID(id);
@@ -69,8 +73,9 @@ public class AdminCategoryController {
      * @param categoryDTO
      * @return
      */
+    @Operation(summary = "更新分类")
     @PutMapping("/{id}")
-    public Result updateCategory(@PathVariable @Min(value = 1, message = "ID必须为正数") int id,  @RequestBody @Valid CategoryDTO categoryDTO) {
+    public Result updateCategory(@PathVariable int id,  @RequestBody @Valid CategoryDTO categoryDTO) {
         categoryDTO.setId(id);
         categoryService.updateCategory(categoryDTO);
         return Result.success();
@@ -84,12 +89,12 @@ public class AdminCategoryController {
      * @param name
      * @return
      */
+    @Operation(summary = "获取所有分类")
     @GetMapping
     public Result<PageResult> getCategories(
             @RequestParam("page") int page,
             @RequestParam("pageSize") int pageSize,
             @RequestParam(value = "name", defaultValue = "") String name) {
-
         CategoryPageQueryDTO categoryPageQueryDTO = new CategoryPageQueryDTO(page, pageSize, name);
         PageResult pageResult = categoryService.pageQuery(categoryPageQueryDTO);
         return Result.success(pageResult);
@@ -103,6 +108,7 @@ public class AdminCategoryController {
      * @param pageSize
      * @return
      */
+    @Operation(summary = "根据分类Id获取图书")
     @GetMapping("/{categoryId}/books")
     public Result<PageResult> getBookByCategoryId( @PathVariable Integer categoryId,
                                                    @RequestParam("page") int page,

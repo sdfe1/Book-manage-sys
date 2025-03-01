@@ -6,7 +6,7 @@ import com.zll.pojo.dto.UserLoginDTO;
 import com.zll.pojo.dto.UserRegisterDTO;
 import com.zll.pojo.entity.User;
 import com.zll.pojo.vo.UserLoginVO;
-import com.zll.server.service.UserService;
+import com.zll.server.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -25,7 +25,8 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class AuthController {
 
-    private final UserService userService;
+    private final AuthService authService;
+
 
     /**
      * 注册功能
@@ -35,7 +36,7 @@ public class AuthController {
     @Operation(summary = "注册")
     @PostMapping(value = "/register")
     public Result register(@Valid @RequestBody UserRegisterDTO userRegisterDTO) {
-        userService.register(userRegisterDTO);
+        authService.register(userRegisterDTO);
         return Result.success();
     }
 
@@ -46,7 +47,7 @@ public class AuthController {
     @Operation(summary = "登录")
     @PostMapping(value = "/login")
     public Result<UserLoginVO> login(@Valid @RequestBody UserLoginDTO userLoginDTO) {
-        User user= userService.login(userLoginDTO);
+        User user= authService.login(userLoginDTO);
         //1.登录,sotoken会自动存入cookie
         StpUtil.login(user.getId());
         log.info("用户角色: {}", user.getRole()); // 确保此处输出 ADMIN

@@ -3,12 +3,23 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.zll.server.mapper.BookCategoryMapper">
     <select id="pageQuery" resultType="BookVO">
-    select b.id, b.title, b.isbn, b.publisher, b.author, b.publish_date
-    from book b
-    where b.id in (
-        select bc.book_id
-        from book_category bc
+        select b.id, b.title, b.isbn, b.publisher, b.author, b.publish_date
+            from book_category bc
+        inner join book b on bc.book_id = b.id
         where bc.category_id = #{categoryId}
-    )
     </select>
+
+    <select id="selectCategoryByBookId" resultType="Category">
+        select c.*
+        from book_category bc
+                 inner join category c on bc.category_id = c.id
+        where bc.book_id = #{bookId}
+    </select>
+
+    <select id="selectExistsByBookIdAndCategoryId" resultType="int">
+        select count(*)
+        from book_category
+        where book_id = #{bookId} and category_id = #{categoryId}
+    </select>
+
 </mapper>

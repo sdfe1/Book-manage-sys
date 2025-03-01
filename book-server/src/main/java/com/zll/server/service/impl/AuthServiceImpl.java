@@ -1,6 +1,7 @@
 package com.zll.server.service.impl;
 
 
+import com.zll.common.constant.AvatarConstant;
 import com.zll.common.constant.StatusConstant;
 import com.zll.common.enumeration.CommonErrorCodeEnum;
 import com.zll.common.exception.BaseException;
@@ -13,7 +14,7 @@ import com.zll.pojo.entity.User;
 import com.zll.pojo.entity.UserProfile;
 import com.zll.server.mapper.UserMapper;
 import com.zll.server.mapper.UserProfileMapper;
-import com.zll.server.service.UserService;
+import com.zll.server.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
@@ -28,7 +29,7 @@ import java.time.LocalDateTime;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService {
+public class AuthServiceImpl implements AuthService {
 
     private final UserMapper userMapper;
 
@@ -71,7 +72,7 @@ public class UserServiceImpl implements UserService {
                 .username(userRegisterDTO.getUsername())
                 .password(PasswordUtil.hashPassword(userRegisterDTO.getPassword()))
                 .role(RoleEnum.USER)
-                .avatar("http")
+                .avatar(AvatarConstant.DEFAULT_AVATAR_URL)
                 .createTime(LocalDateTime.now())
                 .isLogin(StatusConstant.ENABLE)
                 .isWord(StatusConstant.ENABLE)

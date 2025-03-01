@@ -5,6 +5,7 @@ import com.zll.common.result.Result;
 import com.zll.pojo.dto.BookDTO;
 import com.zll.pojo.dto.FavoritePageQueryDTO;
 import com.zll.server.service.FavoriteBookService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -33,10 +34,9 @@ public class FavoriteBookController {
      * @param bookId
      * @return
      */
+    @Operation(summary = "添加图书到收藏夹")
     @PostMapping("/{bookId}")
-    public Result addBookToFavorites(
-            @PathVariable @Min(value = 1, message = "用户ID必须大于0") Long userId,
-            @PathVariable @Min(value = 1, message = "图书ID必须大于0") Long bookId) {
+    public Result addBookToFavorites(@PathVariable  Long userId, @PathVariable  Long bookId) {
 
         favoriteBookService.addFavoriteBook(userId, bookId);
         return Result.success();
@@ -48,15 +48,11 @@ public class FavoriteBookController {
      * @param bookId
      * @return
      */
+    @Operation(summary = "从收藏夹中删除图书")
     @DeleteMapping("/{bookId}")
-    public Result removeBookFromFavorites(
-            @PathVariable@Min(value = 1, message = "用户ID必须大于0") Long userId,
-            @PathVariable @Min(value = 1, message = "图书ID必须大于0") Long bookId
-            ) {
-
+    public Result removeBookFromFavorites(@PathVariable Long userId, @PathVariable  Long bookId) {
         // 处理删除收藏逻辑
         favoriteBookService.removeFavoriteBook(userId, bookId);
-
         return Result.success();
     }
 
@@ -65,11 +61,9 @@ public class FavoriteBookController {
      * @param userId
      * @return
      */
+    @Operation(summary = "获取收藏夹的图书列表")
     @GetMapping
-    public Result<PageResult> getFavorites(
-            @RequestParam @Min(1) int page,
-            @RequestParam @Min(1)@Max(100) int pageSize,
-            @PathVariable @Min(1) Long userId) {
+    public Result<PageResult> getFavorites(@RequestParam int page, @RequestParam int pageSize, @PathVariable  Long userId) {
         FavoritePageQueryDTO favoritePageQueryDTO = new FavoritePageQueryDTO(page, pageSize, userId);
         PageResult pageResult = favoriteBookService.getFavoriteBooks(favoritePageQueryDTO);
         return Result.success(pageResult);

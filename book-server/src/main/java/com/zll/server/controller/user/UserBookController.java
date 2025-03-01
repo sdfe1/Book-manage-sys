@@ -7,6 +7,7 @@ import com.zll.pojo.entity.Book;
 import com.zll.pojo.vo.BookVO;
 import com.zll.server.service.BookCategoryService;
 import com.zll.server.service.BookService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -34,7 +35,8 @@ public class UserBookController {
      * @param sort 排序规则
      * @return
      */
-    @GetMapping("/page")
+    @Operation(summary = "获取所有图书列表")
+    @GetMapping
     public Result<PageResult> getBooks(@RequestParam("page") int page,
                                        @RequestParam("pageSize") int pageSize,
                                        @RequestParam(value = "sort", defaultValue = "title,asc") String sort) {
@@ -49,6 +51,7 @@ public class UserBookController {
      * @param id 图书id
      * @return 统一响应
      */
+    @Operation(summary = "获取单本图书信息")
     @GetMapping("/{id}")
     public Result<BookVO> getBookById(@Valid @PathVariable Long id) {
         Book book = bookService.getBookById(id);
@@ -62,9 +65,11 @@ public class UserBookController {
      * @param bookId 书本id
      * @return 统一响应
      */
+    @Operation(summary = "获取图书的分类")
     @GetMapping("/{bookId}/categories")
-    public Result<Integer> getCategoryByBookId( @PathVariable Long bookId) {
-        return Result.success(bookCategoryService.getCategoryByBookId(bookId));
+    public Result<String> getCategoryByBookId( @PathVariable Long bookId) {
+        String category = bookCategoryService.getCategoryByBookId(bookId);
+        return Result.success(category);
     }
 
 }

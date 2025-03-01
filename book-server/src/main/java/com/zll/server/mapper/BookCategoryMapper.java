@@ -3,6 +3,7 @@ package com.zll.server.mapper;
 import com.github.pagehelper.Page;
 import com.zll.pojo.dto.BookCategoryQueryDTO;
 import com.zll.pojo.entity.BookCategory;
+import com.zll.pojo.entity.Category;
 import com.zll.pojo.vo.BookVO;
 import org.apache.ibatis.annotations.*;
 
@@ -21,9 +22,9 @@ public interface BookCategoryMapper {
     @Update("update book_category set category_id = #{categoryId},book_id = #{bookId} where category_id = #{categoryId} and book_id = #{bookId}")
     void update(BookCategory bookCategory);
 
-    @Select("select * from book_category where book_id = #{bookId}")
-    BookCategory selectByBookId(Long bookId);
+    Category selectCategoryByBookId(Long bookId);
 
+    Integer selectExistsByBookIdAndCategoryId(Long bookId, Integer categoryId);
     Page<BookVO> pageQuery(BookCategoryQueryDTO bookCategoryQueryDTO);
 
 }

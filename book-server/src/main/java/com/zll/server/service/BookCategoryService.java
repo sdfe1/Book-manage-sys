@@ -7,7 +7,7 @@ import jakarta.validation.Valid;
 
 public interface BookCategoryService {
 
-    Integer getCategoryByBookId(Long bookId);
+    String getCategoryByBookId(Long bookId);
 
     PageResult getBookByCategoryId(BookCategoryQueryDTO bookCategoryQueryDTO);
 

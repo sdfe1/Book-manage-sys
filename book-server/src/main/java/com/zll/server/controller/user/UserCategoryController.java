@@ -6,6 +6,7 @@ import com.zll.pojo.dto.BookCategoryQueryDTO;
 import com.zll.pojo.dto.CategoryPageQueryDTO;
 import com.zll.server.service.BookCategoryService;
 import com.zll.server.service.CategoryService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +32,7 @@ public class UserCategoryController {
      * @param pageSize
      * @return
      */
+    @Operation(summary = "根据分类id获取图书信息")
     @GetMapping("/{categoryId}/books")
     public Result<PageResult> getBookByCategoryId(@PathVariable Integer categoryId,
                                                   @RequestParam("page") int page,
@@ -46,6 +48,7 @@ public class UserCategoryController {
      * @param name
      * @return
      */
+    @Operation(summary = "获取所有分类")
     @GetMapping
     public Result<PageResult> getCategories(
             @RequestParam("page") int page,

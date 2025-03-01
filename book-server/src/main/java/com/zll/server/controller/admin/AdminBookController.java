@@ -9,9 +9,9 @@ import com.zll.pojo.entity.Book;
 import com.zll.pojo.vo.BookVO;
 import com.zll.server.service.BookCategoryService;
 import com.zll.server.service.BookService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -38,6 +38,7 @@ public class AdminBookController {
      * @param bookDTO
      * @return
      */
+    @Operation(summary = "新增图书")
     @PostMapping
     public Result addBook(@Valid @RequestBody BookDTO bookDTO){
         bookService.addBook(bookDTO);
@@ -49,6 +50,7 @@ public class AdminBookController {
      * @param id 要删除的图书id
      * @return
      */
+    @Operation(summary = "删除图书")
     @DeleteMapping("/{id}")
     @Validated
     public Result deleteBook(@PathVariable Long id){
@@ -62,6 +64,7 @@ public class AdminBookController {
      * @param id 图书Id
      * @return
      */
+    @Operation(summary = "更新图书")
     @PutMapping("/{id}")
     public Result updateBook(@Valid @RequestBody BookDTO bookDTO,@PathVariable Long id) {
         log.info("bookDTO:{}",bookDTO);
@@ -78,7 +81,8 @@ public class AdminBookController {
      * @param sort 排序规则
      * @return
      */
-    @GetMapping("/page")
+    @Operation(summary = "获取所有图书列表")
+    @GetMapping
     public Result<PageResult> getBooks(@RequestParam("page") int page,
                                        @RequestParam("pageSize") int pageSize,
                                        @RequestParam(value = "sort", defaultValue = "title,asc") String sort) {
@@ -93,6 +97,7 @@ public class AdminBookController {
      * @param id 图书id
      * @return 统一响应
      */
+    @Operation(summary = "获取单本图书信息")
     @GetMapping("/{id}")
     public Result<BookVO> getBookById(@Valid @PathVariable Long id) {
         Book book = bookService.getBookById(id);
@@ -101,8 +106,6 @@ public class AdminBookController {
         return Result.success(bookVO);
     }
 
-    //图书数量统计
-
 
     /**
      * 为图书设置分类
@@ -110,6 +113,7 @@ public class AdminBookController {
      * @param categoryId 分类Id
      * @return
      */
+    @Operation(summary = "为图书设置分类")
     @PostMapping("/{bookId}/categories/{categoryId}")
     public Result addBookCategory(@PathVariable Long bookId, @PathVariable Integer categoryId) {
         bookCategoryService.addBookCategory(bookId, categoryId);
@@ -122,21 +126,22 @@ public class AdminBookController {
      * @param categoryId 分类Id
      * @return
      */
+    @Operation(summary = "删除图书分类")
     @DeleteMapping("/{bookId}/categories/{categoryId}")
     public Result deleteBookCategory(@PathVariable Long bookId, @PathVariable Integer categoryId) {
         bookCategoryService.deleteBookCategory(bookId, categoryId);
         return Result.success();
     }
 
-
-
     /**
-     * 获取图书的分类
+     * 获取图书的分类名
      * @param bookId 书本id
      * @return 统一响应
      */
+    @Operation(summary = "获取图书的分类名")
     @GetMapping("/{bookId}/categories")
-    public Result<Integer> getCategoryByBookId( @PathVariable Long bookId) {
-        return Result.success(bookCategoryService.getCategoryByBookId(bookId));
+    public Result<String> getCategoryByBookId( @PathVariable Long bookId) {
+        String category = bookCategoryService.getCategoryByBookId(bookId);
+        return Result.success(category);
     }
 }

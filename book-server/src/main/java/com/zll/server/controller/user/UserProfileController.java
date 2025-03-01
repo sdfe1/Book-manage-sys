@@ -9,6 +9,7 @@ import com.zll.pojo.dto.UserProfileDTO;
 import com.zll.pojo.em.PrivacyLevel;
 import com.zll.pojo.entity.UserProfile;
 import com.zll.server.service.UserProfileService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -35,6 +36,7 @@ public class UserProfileController {
      * @param userId 获取的用户ID
      * @return
      */
+    @Operation(summary = "获取用户个人资料")
     @GetMapping
     public Result<UserProfileDTO> getUserProfile(@PathVariable  Long userId) {
         // 获取当前登录用户ID
@@ -57,6 +59,7 @@ public class UserProfileController {
      * @param userProfileDTO
      * @return
      */
+    @Operation(summary = "更新个人资料")
     @PostMapping
     public Result updateUserProfile(@PathVariable Long userId, @RequestBody @Valid UserProfileDTO userProfileDTO) {
         userProfileService.updateUserProfile(userId, userProfileDTO);

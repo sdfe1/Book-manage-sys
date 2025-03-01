@@ -4,6 +4,7 @@ import com.zll.common.context.BaseContext;
 import com.zll.common.result.Result;
 import com.zll.pojo.vo.UserVO;
 import com.zll.server.service.FollowService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,7 @@ public class FollowController {
      * @param userId
      * @return
      */
+    @Operation(summary = "关注用户")
     @PostMapping("/follow")
     public Result followUser(@Valid @PathVariable Long userId) {
         Long currentUserId = BaseContext.getCurrentId();
@@ -40,6 +42,7 @@ public class FollowController {
      * @param userId
      * @return
      */
+    @Operation(summary = "取消关注")
     @DeleteMapping("/follow")
     public Result unfollowUser(@Valid @PathVariable Long userId) {
         Long currentUserId = BaseContext.getCurrentId();
@@ -52,6 +55,7 @@ public class FollowController {
      * @param userId
      * @return
      */
+    @Operation(summary = "获取用户的粉丝列表")
     @GetMapping("/followers")
     public Result<List<UserVO>> getFollowers(@Valid @PathVariable Long userId) {
          List<UserVO> followers = followService.getFollowers(userId);
@@ -63,6 +67,7 @@ public class FollowController {
      * @param userId
      * @return
      */
+    @Operation(summary = "获取用户关注的列表")
     @GetMapping("/following")
     public Result<List<UserVO>> getFollowing(@Valid @PathVariable Long userId) {
         List<UserVO> following = followService.getFollowing(userId);

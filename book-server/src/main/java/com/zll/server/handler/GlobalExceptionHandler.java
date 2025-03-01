@@ -21,20 +21,10 @@ import java.util.stream.Collectors;
 public class GlobalExceptionHandler {
     @ExceptionHandler(BaseException.class)
     public Result handleBaseException(BaseException ex) {
+
         return Result.error(ex.getCode(), ex.getMsg());
     }
 
-
-
-    @ExceptionHandler({
-            NotLoginException.class,
-            NotRoleException.class,
-            NotPermissionException.class
-    })
-    public Result handleSaTokenException(SaTokenException ex) {
-
-        return Result.error(ex.getCode(), ex.getMessage());
-    }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Result handleValidationException(MethodArgumentNotValidException ex) {
         String errorMsg = ex.getBindingResult()

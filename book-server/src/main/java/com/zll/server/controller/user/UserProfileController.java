@@ -1,6 +1,5 @@
 package com.zll.server.controller.user;
 
-import cn.dev33.satoken.stp.StpUtil;
 import com.zll.common.context.BaseContext;
 import com.zll.common.enumeration.CommonErrorCodeEnum;
 import com.zll.common.exception.BaseException;
@@ -12,10 +11,8 @@ import com.zll.server.service.UserProfileService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 

@@ -3,17 +3,20 @@ package com.zll.server.config;
 import cn.dev33.satoken.filter.SaServletFilter;
 import cn.dev33.satoken.router.SaRouter;
 import cn.dev33.satoken.stp.StpUtil;
-import cn.dev33.satoken.util.SaResult;
 import com.zll.common.enumeration.CommonErrorCodeEnum;
 import com.zll.common.result.Result;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- *
+ *sa-token配置
  */
 @Configuration
 public class SaTokenConfig {
+    /**
+     * 过滤器
+     * @return
+     */
     @Bean
     public SaServletFilter saServletFilter() {
         return new SaServletFilter()

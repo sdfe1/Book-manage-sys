@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
- * 图书分类关联查询参数
+ * 图书分类分页请求参数
  */
 @Getter
 public class BookCategoryQueryDTO extends PageRequest {

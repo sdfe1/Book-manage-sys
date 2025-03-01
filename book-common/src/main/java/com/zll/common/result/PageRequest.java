@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
- * 页面查询参数
+ * 分页请求参数类
  */
 @Data
 @AllArgsConstructor

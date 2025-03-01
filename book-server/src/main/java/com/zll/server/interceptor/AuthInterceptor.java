@@ -16,11 +16,6 @@ import org.springframework.web.servlet.ModelAndView;
 public class AuthInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        // 放行OPTIONS预检请求
-        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
-            response.setStatus(HttpServletResponse.SC_OK);
-            return true; // 直接放行，不处理业务逻辑
-        }
         // 获取当前用户 ID
         Long userId = StpUtil.getLoginIdAsLong();
         BaseContext.setCurrentId(userId);

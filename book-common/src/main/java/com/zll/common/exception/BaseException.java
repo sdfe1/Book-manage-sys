@@ -3,8 +3,6 @@ package com.zll.common.exception;
 import com.zll.common.enumeration.CommonErrorCodeEnum;
 import lombok.Getter;
 
-import java.text.MessageFormat;
-
 /**
  * 基本异常类
  */

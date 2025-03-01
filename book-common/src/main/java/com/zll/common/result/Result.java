@@ -5,7 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * 后端统一返回结果
+ * 统一响应体类
  * @param <T>
  */
 @Data

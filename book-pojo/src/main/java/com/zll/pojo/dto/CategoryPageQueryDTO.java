@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 /**
- * 分类页面查询参数
+ * 分类页面请求参数
  */
 @Getter
 public class CategoryPageQueryDTO extends PageRequest {

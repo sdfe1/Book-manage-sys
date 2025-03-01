@@ -8,12 +8,12 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 通用分页结果类
+ * 分页结果类
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PageResult implements Serializable {
+public class PageResult  {
 
     private long total; //总记录数
 

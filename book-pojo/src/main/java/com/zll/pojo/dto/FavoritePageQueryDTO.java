@@ -4,7 +4,7 @@ import com.zll.common.result.PageRequest;
 import lombok.Getter;
 
 /**
- * 收藏页面查询参数
+ * 收藏页面请求参数
  */
 @Getter
 public class FavoritePageQueryDTO extends PageRequest {

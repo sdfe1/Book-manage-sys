@@ -7,7 +7,6 @@ import com.zll.common.exception.BaseException;
 
 import com.zll.common.result.PageResult;
 import com.zll.pojo.dto.BookCategoryQueryDTO;
-import com.zll.pojo.entity.BookCategory;
 import com.zll.pojo.entity.Category;
 import com.zll.pojo.vo.BookVO;
 import com.zll.server.mapper.BookCategoryMapper;
@@ -15,7 +14,6 @@ import com.zll.server.mapper.BookMapper;
 import com.zll.server.mapper.CategoryMapper;
 import com.zll.server.service.BookCategoryService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

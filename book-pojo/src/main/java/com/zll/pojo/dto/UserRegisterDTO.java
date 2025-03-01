@@ -26,6 +26,5 @@ public class UserRegisterDTO {
      */
     @NotBlank(message = "密码不能为空")
     @Size(min = 6, max = 16, message = "密码长度需为6-16位")
-    //TODO 是否有特定的格式
     private String password;
 }
